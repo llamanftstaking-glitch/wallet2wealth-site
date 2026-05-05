@@ -1,7 +1,7 @@
 ---
 phase: 1
 slug: foundation-ui
-status: draft
+status: approved
 shadcn_initialized: false
 preset: w2w-dark
 created: 2026-05-05
@@ -128,18 +128,20 @@ Exceptions:
 
 | Role | Size | Weight | Line Height | Usage |
 |------|------|--------|-------------|-------|
-| Body | 16px | 400 (Regular) | 1.6 | Paragraph copy, FAQ answers, feature descriptions |
-| Label | 14px | 500 (Medium) | 1.4 | Badge text, caption, metadata, price secondary text |
+| Body | 16px | 400 (Regular) | 1.6 | Paragraph copy, FAQ answers, feature descriptions, badge text, captions |
+| Label | 14px | 400 (Regular) | 1.4 | Badge text, caption, metadata, price secondary text |
 | Heading | 24px | 700 (Bold) | 1.3 | Section headers ("What's Inside", "Who This Is For") |
-| Display | 48px / 64px desktop | 800 (ExtraBold) | 1.1 | Hero headline only |
+| Display | 48px / 64px desktop | 700 (Bold) | 1.1 | Hero headline + price callout |
 
 **Font family:** `Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`
 
+**Weights declared: 2 only — 400 (Regular) and 700 (Bold).**
+
 **Notes:**
-- Body: 1.6 line-height (slightly over standard 1.5) — sales copy benefits from generous leading
+- Body: 1.6 line-height — sales copy benefits from generous leading
 - Display: 48px on mobile (375px), 64px on desktop (1440px) — responsive via Tailwind `text-5xl md:text-7xl`
-- Max 2 weights in non-display use: 400 for body, 700 for headings. Display uses 800 only for the hero H1.
-- Price (`$2.99`) uses Display size at weight 800, cyan color — standalone visual prominence
+- Visual hierarchy achieved through size alone — 14/16/24/64px scale is sufficient without weight variation
+- Price (`$2.99`) uses Display size at weight 700, cyan color — standalone visual prominence
 
 ---
 
@@ -328,11 +330,11 @@ Vetted: 2026-05-05 — official shadcn registry only, no external blocks.
 
 ## Checker Sign-Off
 
-- [ ] Dimension 1 Copywriting: PASS
-- [ ] Dimension 2 Visuals: PASS
-- [ ] Dimension 3 Color: PASS
-- [ ] Dimension 4 Typography: PASS
-- [ ] Dimension 5 Spacing: PASS
-- [ ] Dimension 6 Registry Safety: PASS
+- [x] Dimension 1 Copywriting: PASS
+- [x] Dimension 2 Visuals: PASS
+- [x] Dimension 3 Color: PASS
+- [x] Dimension 4 Typography: PASS
+- [x] Dimension 5 Spacing: PASS
+- [x] Dimension 6 Registry Safety: PASS
 
-**Approval:** pending
+**Approval:** approved 2026-05-05
