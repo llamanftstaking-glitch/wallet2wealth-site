@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Lock, Loader2 } from 'lucide-react'
 import { getDict, pickLang, SUPPORTED, LANG_LABELS, type Lang } from '@/lib/i18n'
+import { trackInitiateCheckout } from '@/lib/track'
 
 export default function BuyPage() {
   const sp = useSearchParams()
@@ -33,6 +34,7 @@ export default function BuyPage() {
       })
       const data = (await res.json()) as { url?: string; error?: string }
       if (!res.ok || !data.url) throw new Error(data.error || 'Checkout failed')
+      trackInitiateCheckout({ lang })
       window.location.href = data.url
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unexpected error')

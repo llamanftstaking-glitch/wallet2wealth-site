@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Gift, Loader2, CheckCircle2 } from 'lucide-react'
 import type { Lang } from '@/lib/i18n'
+import { trackLead } from '@/lib/track'
 
 const COPY: Record<Lang, {
   title: string
@@ -88,6 +89,7 @@ export function LeadMagnet({ lang }: { lang: Lang }) {
       })
       const data = (await res.json()) as { ok?: boolean; error?: string }
       if (!res.ok || !data.ok) throw new Error(data.error || 'Subscribe failed')
+      trackLead({ lang })
       setDone(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unexpected error')

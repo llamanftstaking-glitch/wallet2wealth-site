@@ -3,6 +3,7 @@ import { GeistMono } from 'geist/font/mono'
 import type { ReactNode } from 'react'
 import type { Metadata } from 'next'
 import { Provider } from '@/components/provider'
+import { Pixels, GtmNoscript } from '@/components/analytics/Pixels'
 import './global.css'
 
 export const metadata: Metadata = {
@@ -42,6 +43,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <body className="flex min-h-screen flex-col bg-[#0A0E1A] text-white antialiased">
+        <GtmNoscript />
+        <Pixels />
         <Provider>{children}</Provider>
       </body>
     </html>

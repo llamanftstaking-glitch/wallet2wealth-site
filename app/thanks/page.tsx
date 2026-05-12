@@ -4,6 +4,7 @@ import { CheckCircle2, Download } from 'lucide-react'
 import { stripe } from '@/lib/stripe'
 import { getPocketBaseAdmin, type SupportedLang } from '@/lib/pocketbase'
 import { getDict, pickLang } from '@/lib/i18n'
+import { PurchaseTracker } from '@/components/PurchaseTracker'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -12,10 +13,14 @@ async function getDownloadInfo(sessionId: string | undefined) {
   if (!sessionId) return null
   let email = ''
   let lang: SupportedLang = 'en'
+  let amount = 299
+  let currency = 'usd'
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId)
     email = session.customer_details?.email || session.customer_email || ''
     lang = ((session.metadata?.lang as SupportedLang) || 'en') as SupportedLang
+    amount = session.amount_total ?? 299
+    currency = session.currency || 'usd'
   } catch {
     return null
   }
@@ -25,9 +30,23 @@ async function getDownloadInfo(sessionId: string | undefined) {
     const dl = await pb
       .collection('downloads')
       .getFirstListItem(`order = "${order.id}" && lang = "${order.lang}"`, { sort: '-created' })
-    return { email: order.email || email, lang: order.lang as SupportedLang, token: dl.token }
+    return {
+      email: order.email || email,
+      lang: order.lang as SupportedLang,
+      token: dl.token as string,
+      orderId: order.id as string,
+      amount: (order.amount_cents as number) || amount,
+      currency: (order.currency as string) || currency,
+    }
   } catch {
-    return { email, lang, token: undefined as string | undefined }
+    return {
+      email,
+      lang,
+      token: undefined as string | undefined,
+      orderId: undefined as string | undefined,
+      amount,
+      currency,
+    }
   }
 }
 
@@ -43,6 +62,12 @@ export default async function ThanksPage({
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center">
+      <PurchaseTracker
+        orderId={info?.orderId}
+        value={info?.amount}
+        currency={info?.currency}
+        lang={lang}
+      />
       <Link href="/" className="mb-8 flex items-center gap-2 text-sm text-white/65 hover:text-white">
         <Image
           src="/brand/logo-no-bg.png"
