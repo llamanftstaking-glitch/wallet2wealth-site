@@ -17,7 +17,12 @@ migrate(
       deleteRule: null,
       fields: [
         { name: 'email', type: 'email', required: true, unique: true },
-        { name: 'lang', type: 'select', maxSelect: 1, values: ['en', 'es', 'it', 'fr', 'pt', 'ru'] },
+        {
+          name: 'lang',
+          type: 'select',
+          maxSelect: 1,
+          values: ['en', 'es', 'it', 'fr', 'pt', 'ru'],
+        },
         { name: 'source', type: 'text', max: 64 },
         { name: 'ip', type: 'text', max: 64 },
         { name: 'user_agent', type: 'text', max: 512 },
@@ -26,9 +31,7 @@ migrate(
         { name: 'created', type: 'autodate', onCreate: true },
         { name: 'updated', type: 'autodate', onCreate: true, onUpdate: true },
       ],
-      indexes: [
-        'CREATE UNIQUE INDEX idx_subscribers_email ON subscribers (email)',
-      ],
+      indexes: ['CREATE UNIQUE INDEX idx_subscribers_email ON subscribers (email)'],
     })
     app.save(subscribers)
 
@@ -47,7 +50,12 @@ migrate(
         { name: 'email', type: 'email', required: true },
         { name: 'amount_cents', type: 'number', required: true, onlyInt: true },
         { name: 'currency', type: 'text', max: 8 },
-        { name: 'lang', type: 'select', maxSelect: 1, values: ['en', 'es', 'it', 'fr', 'pt', 'ru'] },
+        {
+          name: 'lang',
+          type: 'select',
+          maxSelect: 1,
+          values: ['en', 'es', 'it', 'fr', 'pt', 'ru'],
+        },
         {
           name: 'status',
           type: 'select',
@@ -86,7 +94,13 @@ migrate(
           maxSelect: 1,
         },
         { name: 'token', type: 'text', required: true, max: 128 },
-        { name: 'lang', type: 'select', maxSelect: 1, required: true, values: ['en', 'es', 'it', 'fr', 'pt', 'ru'] },
+        {
+          name: 'lang',
+          type: 'select',
+          maxSelect: 1,
+          required: true,
+          values: ['en', 'es', 'it', 'fr', 'pt', 'ru'],
+        },
         { name: 'expires_at', type: 'date', required: true },
         { name: 'used_count', type: 'number', onlyInt: true },
         { name: 'last_used_at', type: 'date' },

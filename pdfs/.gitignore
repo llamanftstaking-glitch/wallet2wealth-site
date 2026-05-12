@@ -1,0 +1,6 @@
+# Built PDFs live in this folder. They are large binary artifacts —
+# track them via Git LFS or a release attachment if you need them in
+# git history. For now they are gitignored and copied at deploy time.
+*.pdf
+!.gitignore
+!README.md
