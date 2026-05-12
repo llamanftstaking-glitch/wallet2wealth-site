@@ -2,83 +2,104 @@
 @tailwind components;
 @tailwind utilities;
 
-#nd-nav {
-  background: hsl(var(--background) / 0.6) !important;
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  backdrop-filter: blur(16px) saturate(180%);
-}
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 9%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 42%;
-    --popover: 0 0% 99%;
-    --popover-foreground: 0 0% 9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 9%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 0 0% 9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 9%;
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --radius: 0.5rem;
-  }
+    --w2w-cyan: #5BC8FF;
+    --w2w-teal: #4DEEEA;
+    --w2w-lavender: #B8A9FF;
+    --w2w-navy: #0A0E1A;
+    --w2w-navy-2: #0D1220;
+    --w2w-purple-glow: #7B6FFF;
+    --w2w-glow-cyan: 0 0 24px rgba(91, 200, 255, 0.45);
+    --w2w-glow-teal: 0 0 24px rgba(77, 238, 234, 0.45);
+    --w2w-glow-lavender: 0 0 24px rgba(184, 169, 255, 0.45);
+    --w2w-glow-purple: 0 0 32px rgba(123, 111, 255, 0.5);
 
-  .dark, :root.dark, :root[class~='dark'] {
-    --background: 0 0% 4%;
+    --radius: 0.75rem;
+    --background: 222 47% 7%;
     --foreground: 0 0% 98%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 55%;
-    --popover: 0 0% 8%;
+    --muted: 222 39% 12%;
+    --muted-foreground: 215 16% 65%;
+    --popover: 222 39% 10%;
     --popover-foreground: 0 0% 98%;
-    --card: 0 0% 8%;
+    --card: 222 39% 10%;
     --card-foreground: 0 0% 98%;
-    --border: 0 0% 14%;
-    --input: 0 0% 14%;
-    --ring: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 12%;
+    --border: 215 28% 20%;
+    --input: 215 28% 20%;
+    --ring: 199 100% 68%;
+    --primary: 199 100% 68%;
+    --primary-foreground: 222 47% 7%;
+    --secondary: 222 39% 12%;
     --secondary-foreground: 0 0% 98%;
-    --accent: 0 0% 12%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 85.7% 97.3%;
+    --accent: 254 100% 84%;
+    --accent-foreground: 222 47% 7%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
   }
 
   * {
     @apply border-border;
   }
 
+  html,
   body {
-    @apply bg-background text-foreground;
-    font-family: var(--font-geist-sans), system-ui, sans-serif;
+    background-color: var(--w2w-navy);
+    color: #fff;
   }
 
-  footer {
-    @apply bg-background text-foreground;
-    font-family: var(--font-geist-sans), system-ui, sans-serif;
+  body {
+    font-family: var(--font-geist-sans), Inter, -apple-system, BlinkMacSystemFont,
+      'Segoe UI', sans-serif;
+    line-height: 1.6;
   }
 
-  h1 {
-    @apply tracking-tight leading-tight;
-    font-family: var(--font-geist-sans), system-ui, sans-serif;
-  }
-
-  h2 {
+  h1,
+  h2,
+  h3 {
     @apply tracking-tight;
-    font-family: var(--font-geist-sans), system-ui, sans-serif;
+    font-weight: 700;
   }
 }
 
-.social-svg {
-  border-radius: 10px !important;
+@layer components {
+  .w2w-glass {
+    @apply rounded-xl border border-white/10 bg-white/5 backdrop-blur-md;
+  }
+  .w2w-gradient-text {
+    background-image: linear-gradient(90deg, var(--w2w-cyan), var(--w2w-teal));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .w2w-cta {
+    background: var(--w2w-cyan);
+    color: var(--w2w-navy);
+    box-shadow: var(--w2w-glow-cyan);
+    transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+  }
+  .w2w-cta:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 36px rgba(91, 200, 255, 0.7);
+  }
+}
+
+@keyframes w2w-blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(40px, -30px) scale(1.08);
+  }
+  66% {
+    transform: translate(-30px, 20px) scale(0.95);
+  }
+}
+.w2w-blob {
+  animation: w2w-blob 8s ease-in-out infinite;
+  filter: blur(60px);
+  opacity: 0.55;
+  border-radius: 9999px;
+  position: absolute;
+  pointer-events: none;
 }

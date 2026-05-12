@@ -68,3 +68,4 @@ coordination/orchestration/*
 *.sqlite-wal
 claude-flow
 hive-mind-prompt-*.txt
+tsconfig.tsbuildinfo

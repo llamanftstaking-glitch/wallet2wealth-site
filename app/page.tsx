@@ -1,378 +1,228 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import {
-  Bot,
-  Terminal,
-  Settings2,
-  Code,
-  Search,
-  Plug,
-  Brain,
-  Globe,
+  Wallet,
+  Coins,
   ShieldCheck,
-  ArrowRight,
-  Github,
+  TrendingUp,
+  BookOpen,
+  Zap,
   Star,
-  MessageSquare,
+  Download,
+  CheckCircle2,
 } from 'lucide-react'
-import { HomeLayout } from 'fumadocs-ui/layouts/home'
-import { baseOptions } from '@/app/layout.config'
-import type { Metadata } from 'next'
 
-import DemoImageDark from '@/components/home/img/demo_dark.png'
-import DemoImageLight from '@/components/home/img/demo_light.png'
-import DemoImageMobileDark from '@/components/home/img/demo_mobile_dark.png'
-import DemoImageMobileLight from '@/components/home/img/demo_mobile_light.png'
-import FooterMenu from '@/components/FooterMenu'
-
-export const metadata: Metadata = {
-  title: 'LibreChat - The Open-Source AI Platform',
-  description:
-    'LibreChat brings together all your AI conversations in one unified, customizable interface.',
-}
-
-/* ---------------------------------------------------------------------------
- * Data fetching (server-side, cached)
- * --------------------------------------------------------------------------- */
-
-async function getGitHubData(): Promise<{ stars: number; contributors: number }> {
-  try {
-    const [repoRes, contribRes] = await Promise.all([
-      fetch('https://api.github.com/repos/danny-avila/LibreChat', {
-        next: { revalidate: 3600 },
-      }),
-      fetch(
-        'https://api.github.com/repos/danny-avila/LibreChat/contributors?per_page=1&anon=true',
-        { next: { revalidate: 3600 } },
-      ),
-    ])
-
-    const repoData = repoRes.ok ? await repoRes.json() : {}
-    const stars = repoData.stargazers_count ?? 0
-
-    let contributors = 0
-    if (contribRes.ok) {
-      const linkHeader = contribRes.headers.get('link')
-      if (linkHeader) {
-        const match = linkHeader.match(/page=(\d+)>;\s*rel="last"/)
-        contributors = match ? parseInt(match[1], 10) : 0
-      }
-    }
-
-    return { stars, contributors }
-  } catch {
-    return { stars: 0, contributors: 0 }
-  }
-}
-
-const DOCKER_HUB_REPOS = [
-  'librechat/librechat',
-  'librechat/librechat-api',
-  'librechat/librechat-dev',
-  'librechat/librechat-dev-api',
-  'librechat/lc-dev',
-  'librechat/lc-dev-api',
-]
-
-const GHCR_PACKAGES = ['librechat', 'librechat-api', 'librechat-dev', 'librechat-dev-api']
-
-async function getDockerHubPulls(repo: string): Promise<number> {
-  try {
-    const res = await fetch(`https://hub.docker.com/v2/repositories/${repo}/`, {
-      next: { revalidate: 3600 },
-    })
-    if (!res.ok) return 0
-    const data = await res.json()
-    return data.pull_count ?? 0
-  } catch {
-    return 0
-  }
-}
-
-async function getGhcrDownloads(pkg: string): Promise<number> {
-  try {
-    const res = await fetch(`https://github.com/danny-avila/LibreChat/pkgs/container/${pkg}`, {
-      next: { revalidate: 3600 },
-    })
-    if (!res.ok) return 0
-    const html = await res.text()
-    const match = html.match(/Total downloads[\s\S]*?title="(\d+)"/)
-    return match ? parseInt(match[1], 10) : 0
-  } catch {
-    return 0
-  }
-}
-
-async function getContainerPulls(): Promise<number> {
-  const [dockerHubCounts, ghcrCounts] = await Promise.all([
-    Promise.all(DOCKER_HUB_REPOS.map(getDockerHubPulls)),
-    Promise.all(GHCR_PACKAGES.map(getGhcrDownloads)),
-  ])
-  return [...dockerHubCounts, ...ghcrCounts].reduce((sum, n) => sum + n, 0)
-}
-
-/* ---------------------------------------------------------------------------
- * Helpers
- * --------------------------------------------------------------------------- */
-
-function formatNumber(num: number): string {
-  if (num >= 1_000_000) {
-    return `${(num / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`
-  }
-  if (num >= 1_000) {
-    return `${(num / 1_000).toFixed(1).replace(/\.0$/, '')}k`
-  }
-  return num.toString()
-}
-
-/* ---------------------------------------------------------------------------
- * Company logos data
- * --------------------------------------------------------------------------- */
-
-const companies = [
+const chapters = [
   {
-    name: 'Shopify',
-    logoLight: '/images/logos/Shopify_light.svg',
-    logoDark: '/images/logos/Shopify_dark.svg',
-    isSvg: true,
-    height: 'h-12',
-    imgHeight: 48,
+    icon: Wallet,
+    title: 'What Is a Crypto Wallet?',
+    body: 'Hot wallets vs cold wallets — explained without the tech overwhelm.',
   },
   {
-    name: 'Daimler Truck',
-    logoLight: '/images/logos/DaimlerTruck_light.svg',
-    logoDark: '/images/logos/DaimlerTruck_dark.svg',
-    isSvg: true,
-    height: 'h-6',
-    imgHeight: 24,
-  },
-  {
-    name: 'Boston University',
-    logoLight: '/images/logos/BostonUniversity_light.png',
-    logoDark: '/images/logos/BostonUniversity_dark.png',
-    isSvg: false,
-    height: 'h-12',
-    imgHeight: 48,
-  },
-  {
-    name: 'ClickHouse',
-    logoLight: '/images/logos/ClickHouse_light.svg',
-    logoDark: '/images/logos/ClickHouse_dark.svg',
-    isSvg: true,
-    height: 'h-14',
-    imgHeight: 56,
-  },
-  {
-    name: 'Stripe',
-    logoLight: '/images/logos/Stripe wordmark - Slate.svg',
-    logoDark: '/images/logos/Stripe wordmark - White.svg',
-    isSvg: true,
-    height: 'h-10',
-    imgHeight: 40,
-  },
-]
-
-/* ---------------------------------------------------------------------------
- * Features data
- * --------------------------------------------------------------------------- */
-
-const features = [
-  {
-    icon: Bot,
-    title: 'Agents',
-    description: 'Advanced agents with file handling, code interpretation, and API actions',
-    href: '/docs/features/agents',
-  },
-  {
-    icon: Terminal,
-    title: 'Code Interpreter',
-    description: 'Execute code in multiple languages securely with zero setup',
-    href: '/docs/features/code_interpreter',
-  },
-  {
-    icon: Settings2,
-    title: 'Models',
-    description: 'AI model selection including Anthropic, AWS, OpenAI, Azure, and more',
-    href: '/docs/configuration/pre_configured_ai',
-  },
-  {
-    icon: Code,
-    title: 'Artifacts',
-    description: 'Create React, HTML code, and Mermaid diagrams in chat',
-    href: '/docs/features/artifacts',
-  },
-  {
-    icon: Search,
-    title: 'Search',
-    description: 'Search for messages, files, and code snippets in an instant',
-    href: '/docs/configuration/meilisearch',
-  },
-  {
-    icon: Plug,
-    title: 'MCP',
-    description: 'Connect to any tool or service with Model Context Protocol support',
-    href: '/docs/features/mcp',
-  },
-  {
-    icon: Brain,
-    title: 'Memory',
-    description: 'Persistent context across conversations so your AI remembers you',
-    href: '/docs/features/memory',
-  },
-  {
-    icon: Globe,
-    title: 'Web Search',
-    description: 'Give any model live internet access with built-in search and reranking',
-    href: '/docs/features/web_search',
+    icon: Coins,
+    title: 'Bitcoin, Ethereum & Beyond',
+    body: "The coins that actually matter for beginners (and why most don't).",
   },
   {
     icon: ShieldCheck,
-    title: 'Authentication',
-    description: 'Enterprise-ready SSO with OAuth, SAML, LDAP, and two-factor auth',
-    href: '/docs/configuration/authentication',
+    title: 'Staying Safe from Scams',
+    body: 'The 5 red flags every beginner must know before sending a single dollar.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'How to Buy Your First Coin',
+    body: 'Step-by-step exchange walkthrough — Coinbase, Kraken, and Binance covered.',
+  },
+  {
+    icon: BookOpen,
+    title: 'Understanding Market Cycles',
+    body: 'Bull markets, bear markets — what history tells us and how to stay calm.',
+  },
+  {
+    icon: Zap,
+    title: 'Your First Action Plan',
+    body: 'A simple 7-day plan to go from zero to your first crypto holding.',
   },
 ]
 
-/* ---------------------------------------------------------------------------
- * Hero Section
- * --------------------------------------------------------------------------- */
+const audience = [
+  {
+    profile: '"I keep hearing about crypto but have no idea where to start."',
+    body: "You've watched the headlines for years. This guide is your on-ramp.",
+  },
+  {
+    profile: '"I tried learning but got lost in technical jargon."',
+    body: 'Plain English only. Zero assumed knowledge.',
+  },
+  {
+    profile: '"I don\'t want to risk much — is $2.99 really worth it?"',
+    body: 'At this price, the real risk is staying on the sideline.',
+  },
+]
 
-function HeroSection({ stars }: { stars: number }) {
+const faqs = [
+  {
+    q: 'What exactly do I get for $2.99?',
+    a: 'A beginner-friendly PDF (instant download + emailed copy) covering wallets, coins, scams, your first purchase, market cycles, and a 7-day action plan.',
+  },
+  {
+    q: 'Why so cheap?',
+    a: 'The goal is to help you start, not gatekeep. If $2.99 helps you avoid one scam, the guide already paid for itself many times over.',
+  },
+  {
+    q: 'How do I receive it?',
+    a: 'Two ways. You get an instant download link on the thank-you page, plus a copy emailed to you immediately after checkout.',
+  },
+  {
+    q: 'Is this financial advice?',
+    a: 'No. This is education — the basics nobody bothered to explain to you. Always do your own research before investing.',
+  },
+  {
+    q: 'Will this work for someone who is completely non-technical?',
+    a: 'Yes. That is exactly who it is written for. If you can use email, you can follow this guide.',
+  },
+]
+
+const reviews = [
+  {
+    name: 'Mia R.',
+    role: 'First-time buyer',
+    body: 'I bought my first Bitcoin the same day. The wallet section alone was worth way more than $2.99.',
+  },
+  {
+    name: 'Daniel K.',
+    role: 'Self-taught',
+    body: 'Finally a guide that does not assume I already know what gas fees are. Highlighter dry by chapter 3.',
+  },
+  {
+    name: 'Sofia A.',
+    role: 'Skeptic',
+    body: 'I almost did not buy it because of the price. Turns out cheap does not mean low value.',
+  },
+]
+
+function HeroSection() {
   return (
-    <section className="px-4 pb-24 pt-16 sm:px-6 md:pt-24 lg:px-8 lg:pt-32">
-      <div className="mx-auto max-w-4xl text-center">
-        {/* GitHub stars badge */}
-        {stars > 0 && (
-          <Link
-            href="https://github.com/danny-avila/LibreChat"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mb-8 inline-flex items-center rounded-full border border-border text-sm transition-colors hover:bg-accent"
-            aria-label={`Star LibreChat on GitHub — ${formatNumber(stars)} stars`}
-          >
-            <span className="inline-flex items-center gap-2 px-4 py-2 text-foreground">
-              <Github className="size-4" aria-hidden="true" />
-              Star on GitHub
-            </span>
-            <span className="inline-flex items-center gap-1.5 border-l border-border px-3 py-2 text-muted-foreground">
-              <Star className="size-3.5" aria-hidden="true" />
-              {formatNumber(stars)}
-            </span>
-          </Link>
-        )}
-
-        <h1 className="text-5xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-          The Open-Source
-          <br />
-          AI Platform
-        </h1>
-
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-          LibreChat brings together all your AI conversations in one unified, customizable interface
-        </p>
-
-        {/* CTAs */}
-        <nav className="mt-10 flex items-center justify-center gap-4" aria-label="Primary actions">
-          <Link
-            href="/docs"
-            className="inline-flex items-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-            aria-label="Get started with LibreChat documentation"
-          >
-            Get Started
-            <ArrowRight className="ml-2 size-4" aria-hidden="true" />
-          </Link>
-          <Link
-            href="https://chat.librechat.ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center rounded-lg border border-border bg-background px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-            aria-label="Try the LibreChat demo"
-          >
-            Try Demo
-          </Link>
-        </nav>
+    <section className="relative isolate overflow-hidden px-6 pb-16 pt-24 md:pb-24 md:pt-32">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div
+          className="w2w-blob"
+          style={{ width: 520, height: 520, top: -120, left: -100, background: '#4DEEEA' }}
+        />
+        <div
+          className="w2w-blob"
+          style={{
+            width: 480,
+            height: 480,
+            top: 60,
+            right: -120,
+            background: '#5BC8FF',
+            animationDelay: '2s',
+          }}
+        />
+        <div
+          className="w2w-blob"
+          style={{
+            width: 420,
+            height: 420,
+            bottom: -160,
+            left: '40%',
+            background: '#B8A9FF',
+            animationDelay: '4s',
+          }}
+        />
       </div>
 
-      {/* Demo screenshot */}
-      <div className="mx-auto mt-16 max-w-5xl">
-        {/* Desktop */}
-        <div className="hidden md:block">
-          <Image
-            src={DemoImageLight}
-            alt="LibreChat desktop interface in light mode"
-            className="block rounded-xl border border-border shadow-sm dark:hidden"
-            priority
-            sizes="(max-width: 1280px) 90vw, 1120px"
-            placeholder="blur"
-          />
-          <Image
-            src={DemoImageDark}
-            alt="LibreChat desktop interface in dark mode"
-            className="hidden rounded-xl border border-border shadow-sm dark:block"
-            priority
-            sizes="(max-width: 1280px) 90vw, 1120px"
-            placeholder="blur"
-          />
+      <div className="mx-auto flex max-w-5xl flex-col items-center gap-8 text-center">
+        <Image
+          src="/brand/logo-no-bg.png"
+          alt="Wallet to Wealth"
+          width={180}
+          height={180}
+          priority
+          className="drop-shadow-[0_0_36px_rgba(91,200,255,0.45)]"
+        />
+
+        <span className="w2w-glass inline-flex items-center gap-2 px-3 py-1 text-sm text-white/80">
+          <Star className="h-4 w-4 text-[var(--w2w-lavender)]" />
+          Crypto Beginner Guide · 2026 Edition
+        </span>
+
+        <h1 className="text-5xl font-bold leading-tight md:text-7xl">
+          From Zero to Crypto.
+          <br />
+          <span className="w2w-gradient-text">Finally, a Guide That Makes Sense.</span>
+        </h1>
+
+        <p className="max-w-2xl text-lg text-white/75 md:text-xl">
+          Skip the YouTube rabbit holes. Get a clear, beginner-friendly PDF that walks you through
+          wallets, coins, and your first real crypto move.
+        </p>
+
+        <div className="flex flex-col items-center gap-2">
+          <div className="text-6xl font-bold text-[var(--w2w-cyan)] md:text-7xl">$2.99</div>
+          <div className="text-sm text-white/60">Less than a coffee. Yours instantly.</div>
         </div>
-        {/* Mobile */}
-        <div className="block md:hidden">
-          <Image
-            src={DemoImageMobileLight}
-            alt="LibreChat mobile interface in light mode"
-            className="mx-auto block max-w-sm rounded-xl border border-border shadow-sm dark:hidden"
-            priority
-            sizes="(max-width: 640px) 90vw, 384px"
-            placeholder="blur"
-          />
-          <Image
-            src={DemoImageMobileDark}
-            alt="LibreChat mobile interface in dark mode"
-            className="mx-auto hidden max-w-sm rounded-xl border border-border shadow-sm dark:block"
-            priority
-            sizes="(max-width: 640px) 90vw, 384px"
-            placeholder="blur"
-          />
+
+        <Link
+          href="/buy"
+          className="w2w-cta inline-flex h-14 items-center justify-center rounded-xl px-8 text-lg font-bold"
+        >
+          Get Instant Access — $2.99
+        </Link>
+
+        <div className="flex items-center gap-2 text-sm text-white/55">
+          <Download className="h-4 w-4" />
+          Instant PDF download · Emailed too
         </div>
       </div>
     </section>
   )
 }
 
-/* ---------------------------------------------------------------------------
- * Trusted By Section
- * --------------------------------------------------------------------------- */
-
-function TrustedBySection() {
+function SocialProofBar() {
   return (
-    <section className="border-y border-border px-4 py-24 sm:px-6 lg:px-8">
+    <section className="border-y border-white/10 bg-white/[0.02] px-6 py-5">
+      <div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-3 text-sm text-white/80 md:flex-row md:gap-8">
+        <span className="flex items-center gap-2">
+          <Download className="h-4 w-4 text-[var(--w2w-cyan)]" />
+          <strong className="text-white">1,200+ downloads</strong>
+        </span>
+        <span className="hidden h-4 w-px bg-white/15 md:block" />
+        <span className="flex items-center gap-1">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Star
+              key={i}
+              className="h-4 w-4 fill-[var(--w2w-lavender)] text-[var(--w2w-lavender)]"
+            />
+          ))}
+          <span className="ml-2">Rated 5 stars by beginners</span>
+        </span>
+      </div>
+    </section>
+  )
+}
+
+function ChaptersSection() {
+  return (
+    <section className="px-6 py-16 md:py-24">
       <div className="mx-auto max-w-5xl">
-        <p className="mb-12 text-center text-sm font-medium uppercase tracking-widest text-muted-foreground">
-          Trusted by companies worldwide
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-8">
-          {companies.map((company) => (
-            <figure key={company.name} className="flex items-center justify-center px-4">
-              {/* Light mode logo */}
-              <Image
-                src={company.logoLight}
-                alt={`${company.name} logo`}
-                className={`block ${company.height} w-auto object-contain opacity-60 transition-opacity hover:opacity-100 dark:hidden`}
-                width={160}
-                height={company.imgHeight}
-                sizes="160px"
-                unoptimized={company.isSvg}
-              />
-              {/* Dark mode logo */}
-              <Image
-                src={company.logoDark}
-                alt={`${company.name} logo`}
-                className={`hidden ${company.height} w-auto object-contain opacity-60 transition-opacity hover:opacity-100 dark:block`}
-                width={160}
-                height={company.imgHeight}
-                sizes="160px"
-                unoptimized={company.isSvg}
-              />
-            </figure>
+        <div className="mb-12 text-center">
+          <h2 className="text-3xl font-bold md:text-4xl">Everything You Need to Start</h2>
+          <p className="mt-3 text-white/65">
+            Focused chapters, zero jargon. Each one builds on the last.
+          </p>
+        </div>
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {chapters.map(({ icon: Icon, title, body }) => (
+            <div
+              key={title}
+              className="w2w-glass p-6 transition hover:border-white/20 hover:shadow-[0_0_24px_rgba(91,200,255,0.25)]"
+            >
+              <Icon className="mb-4 h-8 w-8 text-[var(--w2w-lavender)]" />
+              <h3 className="mb-2 text-lg font-bold">{title}</h3>
+              <p className="text-sm text-white/65">{body}</p>
+            </div>
           ))}
         </div>
       </div>
@@ -380,180 +230,178 @@ function TrustedBySection() {
   )
 }
 
-/* ---------------------------------------------------------------------------
- * Features Section
- * --------------------------------------------------------------------------- */
-
-function FeaturesSection() {
+function AudienceSection() {
   return (
-    <section className="px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-6xl">
-        <header className="mb-16 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Everything you need
-          </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
-            A comprehensive platform for AI-powered conversations
-          </p>
-        </header>
+    <section className="bg-white/[0.02] px-6 py-16 md:py-24">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-12 text-center">
+          <h2 className="text-3xl font-bold md:text-4xl">This Guide Is For You If...</h2>
+        </div>
+        <div className="grid gap-5 md:grid-cols-3">
+          {audience.map(({ profile, body }) => (
+            <div key={profile} className="w2w-glass p-6">
+              <p className="mb-3 text-base font-semibold text-[var(--w2w-cyan)]">{profile}</p>
+              <p className="text-sm text-white/65">{body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => {
-            const Icon = feature.icon
-            return (
-              <article key={feature.title}>
-                <Link
-                  href={feature.href}
-                  className="group flex h-full flex-col rounded-xl border border-border bg-card p-6 transition-colors hover:bg-muted"
-                >
-                  <Icon
-                    className="mb-4 size-6 text-muted-foreground transition-colors group-hover:text-foreground"
-                    aria-hidden="true"
+function ReviewsSection() {
+  return (
+    <section className="px-6 py-16 md:py-24">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-12 text-center">
+          <h2 className="text-3xl font-bold md:text-4xl">Beginners Are Already Winning</h2>
+        </div>
+        <div className="grid gap-5 md:grid-cols-3">
+          {reviews.map((r) => (
+            <div key={r.name} className="w2w-glass p-6">
+              <div className="mb-3 flex gap-0.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star
+                    key={i}
+                    className="h-4 w-4 fill-[var(--w2w-lavender)] text-[var(--w2w-lavender)]"
                   />
-                  <h3 className="mb-2 text-base font-semibold text-foreground">{feature.title}</h3>
-                  <p className="flex-1 text-sm text-muted-foreground">{feature.description}</p>
-                  <span
-                    className="mt-4 inline-flex items-center text-sm font-medium text-foreground opacity-0 transition-opacity group-hover:opacity-100"
-                    aria-hidden="true"
-                  >
-                    Learn more
-                    <ArrowRight className="ml-1 size-3.5" />
-                  </span>
-                </Link>
-              </article>
-            )
-          })}
+                ))}
+              </div>
+              <p className="mb-4 text-sm leading-relaxed text-white/80">&ldquo;{r.body}&rdquo;</p>
+              <div className="text-sm font-semibold">{r.name}</div>
+              <div className="text-xs text-white/55">{r.role}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
   )
 }
 
-/* ---------------------------------------------------------------------------
- * Community Section
- * --------------------------------------------------------------------------- */
-
-function CommunitySection({
-  stars,
-  pulls,
-  contributors,
-}: {
-  stars: number
-  pulls: number
-  contributors: number
-}) {
+function FaqSection() {
   return (
-    <section className="border-y border-border px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-4xl">
-        <header className="mb-16 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Open source, community driven
-          </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Join thousands of developers and organizations building with LibreChat
-          </p>
-        </header>
-
-        {/* Stats */}
-        <div className="mb-16 grid grid-cols-3 gap-8">
-          <div className="text-center">
-            <p className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-              {stars > 0 ? formatNumber(stars) : '--'}
-            </p>
-            <p className="mt-2 text-sm text-muted-foreground">GitHub Stars</p>
-          </div>
-          <div className="text-center">
-            <p className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-              {pulls > 0 ? formatNumber(pulls) : '--'}
-            </p>
-            <p className="mt-2 text-sm text-muted-foreground">Docker Pulls</p>
-          </div>
-          <div className="text-center">
-            <p className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-              {contributors > 0 ? formatNumber(contributors) : '--'}
-            </p>
-            <p className="mt-2 text-sm text-muted-foreground">Contributors</p>
-          </div>
+    <section className="bg-white/[0.02] px-6 py-16 md:py-24">
+      <div className="mx-auto max-w-3xl">
+        <div className="mb-12 text-center">
+          <h2 className="text-3xl font-bold md:text-4xl">Got Questions?</h2>
         </div>
-
-        {/* Links */}
-        <nav className="flex items-center justify-center gap-4" aria-label="Community links">
-          <Link
-            href="https://github.com/danny-avila/LibreChat"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-            aria-label="LibreChat on GitHub"
-          >
-            <Github className="size-4" aria-hidden="true" />
-            GitHub
-          </Link>
-          <Link
-            href="https://discord.librechat.ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-            aria-label="LibreChat on Discord"
-          >
-            <MessageSquare className="size-4" aria-hidden="true" />
-            Discord
-          </Link>
-        </nav>
+        <div className="space-y-3">
+          {faqs.map((f) => (
+            <details
+              key={f.q}
+              className="w2w-glass group cursor-pointer p-5 transition hover:border-white/20"
+            >
+              <summary className="flex items-center justify-between text-base font-semibold text-white">
+                {f.q}
+                <span className="ml-4 text-[var(--w2w-cyan)] transition group-open:rotate-45">
+                  +
+                </span>
+              </summary>
+              <p className="mt-3 text-sm leading-relaxed text-white/70">{f.a}</p>
+            </details>
+          ))}
+        </div>
       </div>
     </section>
   )
 }
 
-/* ---------------------------------------------------------------------------
- * CTA Section
- * --------------------------------------------------------------------------- */
-
-function CTASection() {
+function FinalCTA() {
   return (
-    <section className="px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-3xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-          Start building with LibreChat
+    <section className="relative isolate overflow-hidden px-6 py-24 md:py-32">
+      <div className="pointer-events-none absolute inset-0 -z-10 opacity-60">
+        <div
+          className="w2w-blob"
+          style={{
+            width: 600,
+            height: 600,
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%,-50%)',
+            background: '#5BC8FF',
+          }}
+        />
+      </div>
+      <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
+        <h2 className="text-4xl font-bold md:text-5xl">
+          Your Crypto Journey Starts for <span className="text-[var(--w2w-cyan)]">$2.99</span>
         </h2>
-        <p className="mt-4 text-lg text-muted-foreground">
-          Get up and running in minutes with our quickstart guide
+        <p className="text-lg text-white/75">
+          Stop waiting. The best time to start was yesterday. The next best time is right now.
         </p>
-        <div className="mt-10">
-          <Link
-            href="/docs"
-            className="inline-flex items-center rounded-lg bg-primary px-8 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-            aria-label="Read the quickstart guide"
-          >
-            Quickstart Guide
-            <ArrowRight className="ml-2 size-4" aria-hidden="true" />
-          </Link>
+        <Link
+          href="/buy"
+          className="w2w-cta inline-flex h-14 items-center justify-center rounded-xl px-10 text-lg font-bold"
+        >
+          Get My Copy Now
+        </Link>
+        <div className="flex items-center gap-2 text-sm text-white/55">
+          <CheckCircle2 className="h-4 w-4 text-[var(--w2w-cyan)]" />
+          Instant PDF delivery after purchase
         </div>
       </div>
     </section>
   )
 }
 
-/* ---------------------------------------------------------------------------
- * Page Component
- * --------------------------------------------------------------------------- */
-
-export default async function HomePage() {
-  const [{ stars, contributors }, pulls] = await Promise.all([getGitHubData(), getContainerPulls()])
-
+function Footer() {
   return (
-    <HomeLayout {...baseOptions} nav={{ ...baseOptions.nav, transparentMode: 'top' }}>
-      <main className="min-h-screen">
-        <HeroSection stars={stars} />
-        <TrustedBySection />
-        <FeaturesSection />
-        <CommunitySection stars={stars} pulls={pulls} contributors={contributors} />
-        <CTASection />
-      </main>
-      <div className="border-t border-border px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <FooterMenu />
+    <footer className="border-t border-white/10 px-6 py-6 text-xs text-white/45">
+      <div className="mx-auto flex max-w-5xl flex-col items-center gap-2 text-center md:flex-row md:justify-between">
+        <span>© 2026 Wallet to Wealth. Instant PDF delivery after purchase.</span>
+        <div className="flex gap-4">
+          <Link href="/privacy" className="hover:text-white/80">
+            Privacy
+          </Link>
+          <Link href="/tos" className="hover:text-white/80">
+            Terms
+          </Link>
         </div>
       </div>
-    </HomeLayout>
+    </footer>
+  )
+}
+
+function NavBar() {
+  return (
+    <nav className="sticky top-0 z-50 border-b border-white/5 bg-[#0A0E1A]/70 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
+        <Link href="/" className="flex items-center gap-2">
+          <Image
+            src="/brand/logo-no-bg.png"
+            alt="Wallet to Wealth"
+            width={32}
+            height={32}
+            className="drop-shadow-[0_0_12px_rgba(91,200,255,0.6)]"
+          />
+          <span className="text-sm font-bold tracking-tight">Wallet to Wealth</span>
+        </Link>
+        <Link
+          href="/buy"
+          className="w2w-cta inline-flex h-9 items-center rounded-lg px-4 text-sm font-bold"
+        >
+          Buy Now
+        </Link>
+      </div>
+    </nav>
+  )
+}
+
+export default function HomePage() {
+  return (
+    <>
+      <NavBar />
+      <main className="flex-1">
+        <HeroSection />
+        <SocialProofBar />
+        <ChaptersSection />
+        <AudienceSection />
+        <ReviewsSection />
+        <FaqSection />
+        <FinalCTA />
+        <Footer />
+      </main>
+    </>
   )
 }
