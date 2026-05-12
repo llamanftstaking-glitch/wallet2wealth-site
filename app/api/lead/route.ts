@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getPocketBaseAdmin, SUPPORTED_LANGS, type SupportedLang } from '@/lib/pocketbase'
+import { getSupabaseAdmin, SUPPORTED_LANGS, type SupportedLang } from '@/lib/supabase'
 import { sendSampleChapterEmail } from '@/lib/email'
 
 export const runtime = 'nodejs'
@@ -30,12 +30,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Unsupported language' }, { status: 400 })
   }
 
-  const pb = await getPocketBaseAdmin()
+  const sb = getSupabaseAdmin()
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || ''
   const ua = req.headers.get('user-agent')?.slice(0, 500) || ''
 
-  try {
-    await pb.collection('subscribers').create({
+  // Upsert by unique email — keeps latest lang/source/metadata.
+  const { error } = await sb.from('subscribers').upsert(
+    {
       email,
       lang,
       source,
@@ -43,16 +44,12 @@ export async function POST(req: Request) {
       user_agent: ua,
       consent: true,
       confirmed: false,
-    })
-  } catch (err) {
-    // Likely duplicate — that is fine. Update language preference and continue.
-    try {
-      const existing = await pb.collection('subscribers').getFirstListItem(`email = "${email}"`)
-      await pb.collection('subscribers').update(existing.id, { lang, source })
-    } catch {
-      const msg = err instanceof Error ? err.message : 'Subscriber save failed'
-      return NextResponse.json({ error: msg }, { status: 500 })
-    }
+    },
+    { onConflict: 'email' },
+  )
+
+  if (error) {
+    return NextResponse.json({ error: `Subscribe failed: ${error.message}` }, { status: 500 })
   }
 
   const sampleUrl = `${siteUrl()}/api/sample/${lang}`

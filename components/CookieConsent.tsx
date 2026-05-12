@@ -5,10 +5,7 @@ import { X } from 'lucide-react'
 
 const CONSENT_KEY = 'w2w_consent'
 
-const COPY: Record<
-  string,
-  { body: string; accept: string; decline: string; learn: string }
-> = {
+const COPY: Record<string, { body: string; accept: string; decline: string; learn: string }> = {
   en: {
     body: 'We use cookies for analytics and ad measurement. Decline keeps essential cookies only.',
     accept: 'Accept',

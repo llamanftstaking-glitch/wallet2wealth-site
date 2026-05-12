@@ -2,7 +2,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { CheckCircle2, Download } from 'lucide-react'
 import { stripe } from '@/lib/stripe'
-import { getPocketBaseAdmin, type SupportedLang } from '@/lib/pocketbase'
+import {
+  getSupabaseAdmin,
+  type SupportedLang,
+  type OrderRow,
+  type DownloadRow,
+} from '@/lib/supabase'
 import { getDict, pickLang } from '@/lib/i18n'
 import { PurchaseTracker } from '@/components/PurchaseTracker'
 
@@ -25,20 +30,30 @@ async function getDownloadInfo(sessionId: string | undefined) {
     return null
   }
   try {
-    const pb = await getPocketBaseAdmin()
-    const order = await pb
-      .collection('orders')
-      .getFirstListItem(`stripe_session_id = "${sessionId}"`)
-    const dl = await pb
-      .collection('downloads')
-      .getFirstListItem(`order = "${order.id}" && lang = "${order.lang}"`, { sort: '-created' })
+    const sb = getSupabaseAdmin()
+    const { data: order } = await sb
+      .from('orders')
+      .select('*')
+      .eq('stripe_session_id', sessionId)
+      .maybeSingle<OrderRow>()
+    if (!order) {
+      return { email, lang, token: undefined, orderId: undefined, amount, currency }
+    }
+    const { data: dl } = await sb
+      .from('downloads')
+      .select('*')
+      .eq('order_id', order.id)
+      .eq('lang', order.lang || lang)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle<DownloadRow>()
     return {
       email: order.email || email,
-      lang: order.lang as SupportedLang,
-      token: dl.token as string,
-      orderId: order.id as string,
-      amount: (order.amount_cents as number) || amount,
-      currency: (order.currency as string) || currency,
+      lang: (order.lang || lang) as SupportedLang,
+      token: dl?.token,
+      orderId: order.id,
+      amount: order.amount_cents || amount,
+      currency: order.currency || currency,
     }
   } catch {
     return {

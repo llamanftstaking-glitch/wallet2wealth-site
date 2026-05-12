@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type Stripe from 'stripe'
 import { stripe, STRIPE_WEBHOOK_SECRET } from '@/lib/stripe'
-import { getPocketBaseAdmin, type SupportedLang } from '@/lib/pocketbase'
+import { getSupabaseAdmin, generateToken, type SupportedLang, type OrderRow } from '@/lib/supabase'
 import { sendPdfReceiptEmail } from '@/lib/email'
 
 export const runtime = 'nodejs'
@@ -42,77 +42,87 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'No email on session' }, { status: 400 })
   }
 
-  const pb = await getPocketBaseAdmin()
+  const sb = getSupabaseAdmin()
 
-  // Idempotency: do nothing if order already exists.
-  let order
-  try {
-    order = await pb.collection('orders').getFirstListItem(`stripe_session_id = "${session.id}"`)
-  } catch {
-    // not found → create
+  // Idempotency: orders.stripe_session_id is UNIQUE in the schema.
+  // Use upsert to handle Stripe webhook retries cleanly.
+  const orderPayload = {
+    stripe_session_id: session.id,
+    stripe_payment_intent:
+      typeof session.payment_intent === 'string' ? session.payment_intent : null,
+    email,
+    amount_cents: session.amount_total ?? 299,
+    currency: session.currency || 'usd',
+    lang,
+    status: 'paid' as const,
+    country: session.customer_details?.address?.country || null,
+    raw: session as unknown as Record<string, unknown>,
   }
 
-  if (!order) {
-    order = await pb.collection('orders').create({
-      stripe_session_id: session.id,
-      stripe_payment_intent:
-        typeof session.payment_intent === 'string' ? session.payment_intent : '',
-      email,
-      amount_cents: session.amount_total ?? 299,
-      currency: session.currency || 'usd',
-      lang,
-      status: 'paid',
-      country: session.customer_details?.address?.country || '',
-      raw: session as unknown as Record<string, unknown>,
-    })
-  } else if (order.status !== 'paid') {
-    order = await pb.collection('orders').update(order.id, { status: 'paid' })
+  const { data: upserted, error: upsertErr } = await sb
+    .from('orders')
+    .upsert(orderPayload, { onConflict: 'stripe_session_id' })
+    .select()
+    .single<OrderRow>()
+
+  if (upsertErr || !upserted) {
+    return NextResponse.json(
+      { error: `Order upsert failed: ${upsertErr?.message ?? 'unknown'}` },
+      { status: 500 },
+    )
   }
 
-  // Look up the download row the PB hook minted.
+  const order = upserted
+
+  // Mint a 14-day download token (idempotency: skip if one already exists for this order+lang).
   let token: string | undefined
-  for (let i = 0; i < 5 && !token; i++) {
-    try {
-      const dl = await pb
-        .collection('downloads')
-        .getFirstListItem(`order = "${order.id}" && lang = "${lang}"`, { sort: '-created' })
-      token = dl.token
-    } catch {
-      await new Promise((r) => setTimeout(r, 200))
-    }
-  }
+  const { data: existingDl } = await sb
+    .from('downloads')
+    .select('token')
+    .eq('order_id', order.id)
+    .eq('lang', lang)
+    .order('created_at', { ascending: false })
+    .limit(1)
 
-  // Fallback: create the download here if the hook did not run in time.
-  if (!token) {
-    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    let t = ''
-    for (let i = 0; i < 48; i++) t += chars[Math.floor(Math.random() * chars.length)]
-    const expires = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString()
-    const dl = await pb.collection('downloads').create({
-      order: order.id,
-      lang,
-      token: t,
-      expires_at: expires,
-      used_count: 0,
-    })
-    token = dl.token
+  if (existingDl && existingDl.length > 0) {
+    token = existingDl[0].token
+  } else {
+    const expiresAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString()
+    const newToken = generateToken(48)
+    const { data: created, error: dlErr } = await sb
+      .from('downloads')
+      .insert({
+        order_id: order.id,
+        lang,
+        token: newToken,
+        expires_at: expiresAt,
+        used_count: 0,
+      })
+      .select('token')
+      .single<{ token: string }>()
+    if (dlErr || !created) {
+      return NextResponse.json(
+        { error: `Download mint failed: ${dlErr?.message ?? 'unknown'}` },
+        { status: 500 },
+      )
+    }
+    token = created.token
   }
 
   const downloadUrl = `${siteUrl()}/api/download/${token}`
   await sendPdfReceiptEmail({ to: email, lang, downloadUrl })
 
-  // Also auto-subscribe the buyer to the upsell list.
-  try {
-    await pb.collection('subscribers').create({
+  // Auto-subscribe buyer (upsert by unique email).
+  await sb.from('subscribers').upsert(
+    {
       email,
       lang,
       source: 'purchase',
       consent: true,
       confirmed: true,
-    })
-  } catch {
-    // already a subscriber — ignore
-  }
+    },
+    { onConflict: 'email' },
+  )
 
   return NextResponse.json({ received: true })
 }

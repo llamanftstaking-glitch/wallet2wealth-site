@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { stripe, STRIPE_PRICE_ID } from '@/lib/stripe'
-import { SUPPORTED_LANGS, type SupportedLang } from '@/lib/pocketbase'
+import { SUPPORTED_LANGS, type SupportedLang } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 

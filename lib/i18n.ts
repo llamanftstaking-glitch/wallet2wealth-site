@@ -1,4 +1,4 @@
-import type { SupportedLang } from './pocketbase'
+import type { SupportedLang } from './supabase'
 
 export type Lang = SupportedLang
 export const SUPPORTED: Lang[] = ['en', 'es', 'it', 'fr', 'pt', 'ru']

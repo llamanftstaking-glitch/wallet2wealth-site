@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server'
 import { promises as fs } from 'fs'
 import path from 'path'
-import { getPocketBaseAdmin, SUPPORTED_LANGS, type SupportedLang } from '@/lib/pocketbase'
+import {
+  getSupabaseAdmin,
+  SUPPORTED_LANGS,
+  type SupportedLang,
+  type DownloadRow,
+} from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -27,12 +32,15 @@ export async function GET(req: Request, ctx: { params: Promise<{ token: string }
     return NextResponse.json({ error: 'Invalid token' }, { status: 400 })
   }
 
-  const pb = await getPocketBaseAdmin()
+  const sb = getSupabaseAdmin()
 
-  let dl
-  try {
-    dl = await pb.collection('downloads').getFirstListItem(`token = "${token}"`)
-  } catch {
+  const { data: dl, error } = await sb
+    .from('downloads')
+    .select('*')
+    .eq('token', token)
+    .maybeSingle<DownloadRow>()
+
+  if (error || !dl) {
     return NextResponse.json({ error: 'Download not found' }, { status: 404 })
   }
 
@@ -41,7 +49,9 @@ export async function GET(req: Request, ctx: { params: Promise<{ token: string }
     return NextResponse.json({ error: 'This download link has expired' }, { status: 410 })
   }
 
-  const lang = (SUPPORTED_LANGS.includes(dl.lang) ? dl.lang : 'en') as SupportedLang
+  const lang = (
+    SUPPORTED_LANGS.includes(dl.lang as SupportedLang) ? dl.lang : 'en'
+  ) as SupportedLang
   let p = pdfPathForLang(lang)
   if (!(await fileExists(p))) {
     // Fallback to English so paying customers always get something.
@@ -59,15 +69,15 @@ export async function GET(req: Request, ctx: { params: Promise<{ token: string }
   const data = new Blob([ab], { type: 'application/pdf' })
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || ''
 
-  try {
-    await pb.collection('downloads').update(dl.id, {
+  // Best-effort usage tracking; never block a paying customer if it fails.
+  await sb
+    .from('downloads')
+    .update({
       used_count: (dl.used_count ?? 0) + 1,
       last_used_at: new Date().toISOString(),
       last_ip: ip,
     })
-  } catch {
-    // non-fatal — never block a paying customer
-  }
+    .eq('id', dl.id)
 
   return new NextResponse(data, {
     status: 200,

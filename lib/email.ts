@@ -1,6 +1,6 @@
 import 'server-only'
 import { Resend } from 'resend'
-import type { SupportedLang } from './pocketbase'
+import type { SupportedLang } from './supabase'
 
 const KEY = process.env.RESEND_API_KEY
 const FROM = process.env.EMAIL_FROM || 'Wallet to Wealth <hello@wallet2wealth.com>'

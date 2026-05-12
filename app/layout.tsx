@@ -29,7 +29,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   alternates: {
     canonical: SITE,
-    languages: Object.fromEntries(SUPPORTED.map((l) => [l, l === 'en' ? SITE : `${SITE}/?lang=${l}`])),
+    languages: Object.fromEntries(
+      SUPPORTED.map((l) => [l, l === 'en' ? SITE : `${SITE}/?lang=${l}`]),
+    ),
   },
   manifest: '/site.webmanifest',
   openGraph: {

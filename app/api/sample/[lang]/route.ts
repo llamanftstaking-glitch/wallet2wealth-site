@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { promises as fs } from 'fs'
 import path from 'path'
-import { SUPPORTED_LANGS, type SupportedLang } from '@/lib/pocketbase'
+import { SUPPORTED_LANGS, type SupportedLang } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 

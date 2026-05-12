@@ -18,7 +18,13 @@ module.exports = {
   changefreq: 'daily',
   exclude: ['/api/*', '/thanks'],
   additionalPaths: async () => [
-    { loc: '/', priority: 1, changefreq: 'daily', lastmod: now, alternateRefs: langAlternates('/') },
+    {
+      loc: '/',
+      priority: 1,
+      changefreq: 'daily',
+      lastmod: now,
+      alternateRefs: langAlternates('/'),
+    },
     {
       loc: '/buy',
       priority: 0.9,
