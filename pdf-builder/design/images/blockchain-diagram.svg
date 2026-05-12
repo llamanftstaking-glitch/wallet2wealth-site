@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 220" width="760" height="220" style="font-family:'Space Grotesk',sans-serif;">
+  <defs>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="blockGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A1A2E"/>
+      <stop offset="100%" style="stop-color:#111120"/>
+    </linearGradient>
+    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4DA8DA;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#00C9B1;stop-opacity:0.8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Block 1 -->
+  <rect x="10" y="30" width="210" height="130" rx="8" fill="url(#blockGrad)" stroke="#4DA8DA" stroke-width="1.5" filter="url(#glow)" opacity="0.9"/>
+  <text x="115" y="58" fill="#4DA8DA" font-size="9" font-weight="700" letter-spacing="2" text-anchor="middle" text-transform="uppercase">BLOCK 001</text>
+  <line x1="40" y1="66" x2="190" y2="66" stroke="#4DA8DA" stroke-width="0.5" opacity="0.3"/>
+  <!-- Lock icon -->
+  <rect x="95" y="78" width="40" height="30" rx="4" fill="none" stroke="#4DA8DA" stroke-width="1.5"/>
+  <path d="M103 78 Q103 68 115 68 Q127 68 127 78" fill="none" stroke="#4DA8DA" stroke-width="1.5"/>
+  <circle cx="115" cy="93" r="3" fill="#4DA8DA"/>
+  <text x="115" y="130" fill="#888899" font-size="8" text-anchor="middle">Genesis Block</text>
+  <text x="115" y="144" fill="#555566" font-size="7" text-anchor="middle">Hash: 0x0000…a3f2</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="225" y1="95" x2="268" y2="95" stroke="url(#lineGrad)" stroke-width="2" stroke-dasharray="4,2"/>
+  <polygon points="268,90 278,95 268,100" fill="#00C9B1" opacity="0.9"/>
+
+  <!-- Block 2 -->
+  <rect x="280" y="30" width="210" height="130" rx="8" fill="url(#blockGrad)" stroke="#00C9B1" stroke-width="1.5" filter="url(#glow)" opacity="0.9"/>
+  <text x="385" y="58" fill="#00C9B1" font-size="9" font-weight="700" letter-spacing="2" text-anchor="middle">BLOCK 002</text>
+  <line x1="310" y1="66" x2="460" y2="66" stroke="#00C9B1" stroke-width="0.5" opacity="0.3"/>
+  <!-- Hash icon -->
+  <text x="385" y="105" fill="#00C9B1" font-size="28" font-weight="700" text-anchor="middle" opacity="0.9">#</text>
+  <text x="385" y="130" fill="#888899" font-size="8" text-anchor="middle">Transaction Data</text>
+  <text x="385" y="144" fill="#555566" font-size="7" text-anchor="middle">Prev: 0x0000…a3f2</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="495" y1="95" x2="538" y2="95" stroke="url(#lineGrad)" stroke-width="2" stroke-dasharray="4,2"/>
+  <polygon points="538,90 548,95 538,100" fill="#00C9B1" opacity="0.9"/>
+
+  <!-- Block 3 -->
+  <rect x="550" y="30" width="210" height="130" rx="8" fill="url(#blockGrad)" stroke="#4DA8DA" stroke-width="1.5" filter="url(#glow)" opacity="0.9"/>
+  <text x="655" y="58" fill="#4DA8DA" font-size="9" font-weight="700" letter-spacing="2" text-anchor="middle">BLOCK 003</text>
+  <line x1="580" y1="66" x2="730" y2="66" stroke="#4DA8DA" stroke-width="0.5" opacity="0.3"/>
+  <!-- Chain/link icon -->
+  <path d="M635 85 Q635 78 642 78 L655 78 Q662 78 662 85 Q662 92 655 92 L642 92 Q635 92 635 85Z" fill="none" stroke="#4DA8DA" stroke-width="1.5"/>
+  <path d="M648 92 Q648 99 655 99 L668 99 Q675 99 675 106 Q675 113 668 113 L655 113 Q648 113 648 106" fill="none" stroke="#4DA8DA" stroke-width="1.5"/>
+  <text x="655" y="130" fill="#888899" font-size="8" text-anchor="middle">Verified Block</text>
+  <text x="655" y="144" fill="#555566" font-size="7" text-anchor="middle">Immutable · Permanent</text>
+
+  <!-- Bottom label -->
+  <text x="380" y="195" fill="#555566" font-size="8" text-anchor="middle" letter-spacing="1">EACH BLOCK REFERENCES THE PREVIOUS · CANNOT BE ALTERED WITHOUT BREAKING THE CHAIN</text>
+</svg>

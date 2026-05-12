@@ -1,0 +1,14 @@
+{
+  "name": "wallet2wealth-pdf",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "node scripts/build.js --lang=en",
+    "build:es": "node scripts/build.js --lang=es",
+    "build:pt": "node scripts/build.js --lang=pt"
+  },
+  "dependencies": {
+    "marked": "^12.0.0",
+    "puppeteer": "^22.0.0",
+    "yargs": "^18.0.0"
+  }
+}
