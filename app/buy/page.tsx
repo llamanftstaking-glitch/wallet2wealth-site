@@ -1,24 +1,25 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Lock, Loader2 } from 'lucide-react'
-
-const LANGS = [
-  { code: 'en', label: 'English' },
-  { code: 'es', label: 'Español' },
-  { code: 'it', label: 'Italiano' },
-  { code: 'fr', label: 'Français' },
-  { code: 'pt', label: 'Português' },
-  { code: 'ru', label: 'Русский' },
-] as const
+import { getDict, pickLang, SUPPORTED, LANG_LABELS, type Lang } from '@/lib/i18n'
 
 export default function BuyPage() {
+  const sp = useSearchParams()
+  const initial = pickLang(sp?.get('lang') || undefined)
+  const [lang, setLang] = useState<Lang>(initial)
   const [email, setEmail] = useState('')
-  const [lang, setLang] = useState<(typeof LANGS)[number]['code']>('en')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    document.cookie = `w2w_lang=${lang}; path=/; max-age=${60 * 60 * 24 * 365}`
+  }, [lang])
+
+  const t = getDict(lang).buy
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -31,9 +32,7 @@ export default function BuyPage() {
         body: JSON.stringify({ email, lang }),
       })
       const data = (await res.json()) as { url?: string; error?: string }
-      if (!res.ok || !data.url) {
-        throw new Error(data.error || 'Checkout failed')
-      }
+      if (!res.ok || !data.url) throw new Error(data.error || 'Checkout failed')
       window.location.href = data.url
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unexpected error')
@@ -51,34 +50,33 @@ export default function BuyPage() {
           height={28}
           className="drop-shadow-[0_0_10px_rgba(91,200,255,0.6)]"
         />
-        Wallet to Wealth
+        {t.back}
       </Link>
 
       <div className="w2w-glass w-full max-w-md p-8">
-        <h1 className="text-2xl font-bold">Get the PDF</h1>
+        <h1 className="text-2xl font-bold">{t.title}</h1>
         <p className="mt-1 text-sm text-white/65">
-          Pick your language, enter your email, and check out for{' '}
-          <span className="text-[var(--w2w-cyan)] font-semibold">$2.99</span>.
+          {t.sub} <span className="font-semibold text-[var(--w2w-cyan)]">$2.99</span>.
         </p>
 
         <form onSubmit={onSubmit} className="mt-6 space-y-5">
           <div>
             <label className="mb-2 block text-xs uppercase tracking-wide text-white/55">
-              Language
+              {t.langLabel}
             </label>
             <div className="grid grid-cols-3 gap-2">
-              {LANGS.map((l) => (
+              {SUPPORTED.map((l) => (
                 <button
-                  key={l.code}
+                  key={l}
                   type="button"
-                  onClick={() => setLang(l.code)}
+                  onClick={() => setLang(l)}
                   className={`rounded-lg border px-3 py-2 text-sm transition ${
-                    lang === l.code
+                    lang === l
                       ? 'border-[var(--w2w-cyan)] bg-[var(--w2w-cyan)]/15 text-white'
                       : 'border-white/10 bg-white/5 text-white/70 hover:border-white/25'
                   }`}
                 >
-                  {l.label}
+                  {LANG_LABELS[l].native}
                 </button>
               ))}
             </div>
@@ -86,7 +84,7 @@ export default function BuyPage() {
 
           <div>
             <label htmlFor="email" className="mb-2 block text-xs uppercase tracking-wide text-white/55">
-              Email
+              {t.emailLabel}
             </label>
             <input
               id="email"
@@ -95,7 +93,7 @@ export default function BuyPage() {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
+              placeholder={t.emailPlaceholder}
               className="h-11 w-full rounded-lg border border-white/10 bg-white/5 px-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--w2w-cyan)]"
             />
           </div>
@@ -112,12 +110,12 @@ export default function BuyPage() {
             className="w2w-cta inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl text-base font-bold disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-            {loading ? 'Redirecting…' : 'Pay $2.99 with Stripe'}
+            {loading ? t.redirecting : t.cta}
           </button>
 
           <div className="flex items-center justify-center gap-2 text-xs text-white/45">
             <Lock className="h-3 w-3" />
-            Secure checkout · Cards, Apple Pay, Google Pay
+            {t.secure}
           </div>
         </form>
       </div>

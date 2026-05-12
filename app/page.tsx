@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { cookies, headers } from 'next/headers'
 import {
   Wallet,
   Coins,
@@ -11,97 +12,50 @@ import {
   Download,
   CheckCircle2,
 } from 'lucide-react'
+import { LangSwitcher } from '@/components/LangSwitcher'
+import { getDict, pickLang, type Lang, type Dict } from '@/lib/i18n'
 
-const chapters = [
-  {
-    icon: Wallet,
-    title: 'What Is a Crypto Wallet?',
-    body: 'Hot wallets vs cold wallets — explained without the tech overwhelm.',
-  },
-  {
-    icon: Coins,
-    title: 'Bitcoin, Ethereum & Beyond',
-    body: "The coins that actually matter for beginners (and why most don't).",
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Staying Safe from Scams',
-    body: 'The 5 red flags every beginner must know before sending a single dollar.',
-  },
-  {
-    icon: TrendingUp,
-    title: 'How to Buy Your First Coin',
-    body: 'Step-by-step exchange walkthrough — Coinbase, Kraken, and Binance covered.',
-  },
-  {
-    icon: BookOpen,
-    title: 'Understanding Market Cycles',
-    body: 'Bull markets, bear markets — what history tells us and how to stay calm.',
-  },
-  {
-    icon: Zap,
-    title: 'Your First Action Plan',
-    body: 'A simple 7-day plan to go from zero to your first crypto holding.',
-  },
-]
+const CHAPTER_ICONS = [Wallet, Coins, ShieldCheck, TrendingUp, BookOpen, Zap]
 
-const audience = [
-  {
-    profile: '"I keep hearing about crypto but have no idea where to start."',
-    body: "You've watched the headlines for years. This guide is your on-ramp.",
-  },
-  {
-    profile: '"I tried learning but got lost in technical jargon."',
-    body: 'Plain English only. Zero assumed knowledge.',
-  },
-  {
-    profile: '"I don\'t want to risk much — is $2.99 really worth it?"',
-    body: 'At this price, the real risk is staying on the sideline.',
-  },
-]
+async function resolveLang(searchParams: Promise<{ lang?: string }>): Promise<Lang> {
+  const sp = await searchParams
+  if (sp.lang) return pickLang(sp.lang)
+  const cookieStore = await cookies()
+  const fromCookie = cookieStore.get('w2w_lang')?.value
+  if (fromCookie) return pickLang(fromCookie)
+  const accept = (await headers()).get('accept-language') || ''
+  return pickLang(accept.split(',')[0])
+}
 
-const faqs = [
-  {
-    q: 'What exactly do I get for $2.99?',
-    a: 'A beginner-friendly PDF (instant download + emailed copy) covering wallets, coins, scams, your first purchase, market cycles, and a 7-day action plan.',
-  },
-  {
-    q: 'Why so cheap?',
-    a: 'The goal is to help you start, not gatekeep. If $2.99 helps you avoid one scam, the guide already paid for itself many times over.',
-  },
-  {
-    q: 'How do I receive it?',
-    a: 'Two ways. You get an instant download link on the thank-you page, plus a copy emailed to you immediately after checkout.',
-  },
-  {
-    q: 'Is this financial advice?',
-    a: 'No. This is education — the basics nobody bothered to explain to you. Always do your own research before investing.',
-  },
-  {
-    q: 'Will this work for someone who is completely non-technical?',
-    a: 'Yes. That is exactly who it is written for. If you can use email, you can follow this guide.',
-  },
-]
+function NavBar({ lang, t, buyHref }: { lang: Lang; t: Dict; buyHref: string }) {
+  return (
+    <nav className="sticky top-0 z-50 border-b border-white/5 bg-[#0A0E1A]/70 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
+        <Link href="/" className="flex items-center gap-2">
+          <Image
+            src="/brand/logo-no-bg.png"
+            alt="Wallet to Wealth"
+            width={32}
+            height={32}
+            className="drop-shadow-[0_0_12px_rgba(91,200,255,0.6)]"
+          />
+          <span className="text-sm font-bold tracking-tight">Wallet to Wealth</span>
+        </Link>
+        <div className="flex items-center gap-3">
+          <LangSwitcher current={lang} />
+          <Link
+            href={buyHref}
+            className="w2w-cta inline-flex h-9 items-center rounded-lg px-4 text-sm font-bold"
+          >
+            {t.nav.buy}
+          </Link>
+        </div>
+      </div>
+    </nav>
+  )
+}
 
-const reviews = [
-  {
-    name: 'Mia R.',
-    role: 'First-time buyer',
-    body: 'I bought my first Bitcoin the same day. The wallet section alone was worth way more than $2.99.',
-  },
-  {
-    name: 'Daniel K.',
-    role: 'Self-taught',
-    body: 'Finally a guide that does not assume I already know what gas fees are. Highlighter dry by chapter 3.',
-  },
-  {
-    name: 'Sofia A.',
-    role: 'Skeptic',
-    body: 'I almost did not buy it because of the price. Turns out cheap does not mean low value.',
-  },
-]
-
-function HeroSection() {
+function HeroSection({ t, buyHref }: { t: Dict; buyHref: string }) {
   return (
     <section className="relative isolate overflow-hidden px-6 pb-16 pt-24 md:pb-24 md:pt-32">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -145,48 +99,45 @@ function HeroSection() {
 
         <span className="w2w-glass inline-flex items-center gap-2 px-3 py-1 text-sm text-white/80">
           <Star className="h-4 w-4 text-[var(--w2w-lavender)]" />
-          Crypto Beginner Guide · 2026 Edition
+          {t.hero.badge}
         </span>
 
         <h1 className="text-5xl font-bold leading-tight md:text-7xl">
-          From Zero to Crypto.
+          {t.hero.h1Line1}
           <br />
-          <span className="w2w-gradient-text">Finally, a Guide That Makes Sense.</span>
+          <span className="w2w-gradient-text">{t.hero.h1Line2}</span>
         </h1>
 
-        <p className="max-w-2xl text-lg text-white/75 md:text-xl">
-          Skip the YouTube rabbit holes. Get a clear, beginner-friendly PDF that walks you through
-          wallets, coins, and your first real crypto move.
-        </p>
+        <p className="max-w-2xl text-lg text-white/75 md:text-xl">{t.hero.sub}</p>
 
         <div className="flex flex-col items-center gap-2">
           <div className="text-6xl font-bold text-[var(--w2w-cyan)] md:text-7xl">$2.99</div>
-          <div className="text-sm text-white/60">Less than a coffee. Yours instantly.</div>
+          <div className="text-sm text-white/60">{t.hero.priceCaption}</div>
         </div>
 
         <Link
-          href="/buy"
+          href={buyHref}
           className="w2w-cta inline-flex h-14 items-center justify-center rounded-xl px-8 text-lg font-bold"
         >
-          Get Instant Access — $2.99
+          {t.hero.cta}
         </Link>
 
         <div className="flex items-center gap-2 text-sm text-white/55">
           <Download className="h-4 w-4" />
-          Instant PDF download · Emailed too
+          {t.hero.delivery}
         </div>
       </div>
     </section>
   )
 }
 
-function SocialProofBar() {
+function SocialProofBar({ t }: { t: Dict }) {
   return (
     <section className="border-y border-white/10 bg-white/[0.02] px-6 py-5">
       <div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-3 text-sm text-white/80 md:flex-row md:gap-8">
         <span className="flex items-center gap-2">
           <Download className="h-4 w-4 text-[var(--w2w-cyan)]" />
-          <strong className="text-white">1,200+ downloads</strong>
+          <strong className="text-white">{t.socialBar.downloads}</strong>
         </span>
         <span className="hidden h-4 w-px bg-white/15 md:block" />
         <span className="flex items-center gap-1">
@@ -196,52 +147,53 @@ function SocialProofBar() {
               className="h-4 w-4 fill-[var(--w2w-lavender)] text-[var(--w2w-lavender)]"
             />
           ))}
-          <span className="ml-2">Rated 5 stars by beginners</span>
+          <span className="ml-2">{t.socialBar.rated}</span>
         </span>
       </div>
     </section>
   )
 }
 
-function ChaptersSection() {
+function ChaptersSection({ t }: { t: Dict }) {
   return (
     <section className="px-6 py-16 md:py-24">
       <div className="mx-auto max-w-5xl">
         <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold md:text-4xl">Everything You Need to Start</h2>
-          <p className="mt-3 text-white/65">
-            Focused chapters, zero jargon. Each one builds on the last.
-          </p>
+          <h2 className="text-3xl font-bold md:text-4xl">{t.chaptersHeader.title}</h2>
+          <p className="mt-3 text-white/65">{t.chaptersHeader.sub}</p>
         </div>
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {chapters.map(({ icon: Icon, title, body }) => (
-            <div
-              key={title}
-              className="w2w-glass p-6 transition hover:border-white/20 hover:shadow-[0_0_24px_rgba(91,200,255,0.25)]"
-            >
-              <Icon className="mb-4 h-8 w-8 text-[var(--w2w-lavender)]" />
-              <h3 className="mb-2 text-lg font-bold">{title}</h3>
-              <p className="text-sm text-white/65">{body}</p>
-            </div>
-          ))}
+          {t.chapters.map((c, i) => {
+            const Icon = CHAPTER_ICONS[i] ?? Wallet
+            return (
+              <div
+                key={c.title}
+                className="w2w-glass p-6 transition hover:border-white/20 hover:shadow-[0_0_24px_rgba(91,200,255,0.25)]"
+              >
+                <Icon className="mb-4 h-8 w-8 text-[var(--w2w-lavender)]" />
+                <h3 className="mb-2 text-lg font-bold">{c.title}</h3>
+                <p className="text-sm text-white/65">{c.body}</p>
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>
   )
 }
 
-function AudienceSection() {
+function AudienceSection({ t }: { t: Dict }) {
   return (
     <section className="bg-white/[0.02] px-6 py-16 md:py-24">
       <div className="mx-auto max-w-5xl">
         <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold md:text-4xl">This Guide Is For You If...</h2>
+          <h2 className="text-3xl font-bold md:text-4xl">{t.audienceHeader}</h2>
         </div>
         <div className="grid gap-5 md:grid-cols-3">
-          {audience.map(({ profile, body }) => (
-            <div key={profile} className="w2w-glass p-6">
-              <p className="mb-3 text-base font-semibold text-[var(--w2w-cyan)]">{profile}</p>
-              <p className="text-sm text-white/65">{body}</p>
+          {t.audience.map((a) => (
+            <div key={a.profile} className="w2w-glass p-6">
+              <p className="mb-3 text-base font-semibold text-[var(--w2w-cyan)]">{a.profile}</p>
+              <p className="text-sm text-white/65">{a.body}</p>
             </div>
           ))}
         </div>
@@ -250,15 +202,15 @@ function AudienceSection() {
   )
 }
 
-function ReviewsSection() {
+function ReviewsSection({ t }: { t: Dict }) {
   return (
     <section className="px-6 py-16 md:py-24">
       <div className="mx-auto max-w-5xl">
         <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold md:text-4xl">Beginners Are Already Winning</h2>
+          <h2 className="text-3xl font-bold md:text-4xl">{t.reviewsHeader}</h2>
         </div>
         <div className="grid gap-5 md:grid-cols-3">
-          {reviews.map((r) => (
+          {t.reviews.map((r) => (
             <div key={r.name} className="w2w-glass p-6">
               <div className="mb-3 flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -279,15 +231,15 @@ function ReviewsSection() {
   )
 }
 
-function FaqSection() {
+function FaqSection({ t }: { t: Dict }) {
   return (
     <section className="bg-white/[0.02] px-6 py-16 md:py-24">
       <div className="mx-auto max-w-3xl">
         <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold md:text-4xl">Got Questions?</h2>
+          <h2 className="text-3xl font-bold md:text-4xl">{t.faqHeader}</h2>
         </div>
         <div className="space-y-3">
-          {faqs.map((f) => (
+          {t.faq.map((f) => (
             <details
               key={f.q}
               className="w2w-glass group cursor-pointer p-5 transition hover:border-white/20"
@@ -307,7 +259,7 @@ function FaqSection() {
   )
 }
 
-function FinalCTA() {
+function FinalCTA({ t, buyHref }: { t: Dict; buyHref: string }) {
   return (
     <section className="relative isolate overflow-hidden px-6 py-24 md:py-32">
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-60">
@@ -325,37 +277,36 @@ function FinalCTA() {
       </div>
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
         <h2 className="text-4xl font-bold md:text-5xl">
-          Your Crypto Journey Starts for <span className="text-[var(--w2w-cyan)]">$2.99</span>
+          {t.finalCta.headPrefix}
+          <span className="text-[var(--w2w-cyan)]">{t.finalCta.headPrice}</span>
         </h2>
-        <p className="text-lg text-white/75">
-          Stop waiting. The best time to start was yesterday. The next best time is right now.
-        </p>
+        <p className="text-lg text-white/75">{t.finalCta.body}</p>
         <Link
-          href="/buy"
+          href={buyHref}
           className="w2w-cta inline-flex h-14 items-center justify-center rounded-xl px-10 text-lg font-bold"
         >
-          Get My Copy Now
+          {t.finalCta.cta}
         </Link>
         <div className="flex items-center gap-2 text-sm text-white/55">
           <CheckCircle2 className="h-4 w-4 text-[var(--w2w-cyan)]" />
-          Instant PDF delivery after purchase
+          {t.finalCta.delivery}
         </div>
       </div>
     </section>
   )
 }
 
-function Footer() {
+function Footer({ t }: { t: Dict }) {
   return (
     <footer className="border-t border-white/10 px-6 py-6 text-xs text-white/45">
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-2 text-center md:flex-row md:justify-between">
-        <span>© 2026 Wallet to Wealth. Instant PDF delivery after purchase.</span>
+        <span>{t.footer.copy}</span>
         <div className="flex gap-4">
           <Link href="/privacy" className="hover:text-white/80">
-            Privacy
+            {t.footer.privacy}
           </Link>
           <Link href="/tos" className="hover:text-white/80">
-            Terms
+            {t.footer.terms}
           </Link>
         </div>
       </div>
@@ -363,44 +314,27 @@ function Footer() {
   )
 }
 
-function NavBar() {
-  return (
-    <nav className="sticky top-0 z-50 border-b border-white/5 bg-[#0A0E1A]/70 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <Image
-            src="/brand/logo-no-bg.png"
-            alt="Wallet to Wealth"
-            width={32}
-            height={32}
-            className="drop-shadow-[0_0_12px_rgba(91,200,255,0.6)]"
-          />
-          <span className="text-sm font-bold tracking-tight">Wallet to Wealth</span>
-        </Link>
-        <Link
-          href="/buy"
-          className="w2w-cta inline-flex h-9 items-center rounded-lg px-4 text-sm font-bold"
-        >
-          Buy Now
-        </Link>
-      </div>
-    </nav>
-  )
-}
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string }>
+}) {
+  const lang = await resolveLang(searchParams)
+  const t = getDict(lang)
+  const buyHref = lang === 'en' ? '/buy' : `/buy?lang=${lang}`
 
-export default function HomePage() {
   return (
     <>
-      <NavBar />
+      <NavBar lang={lang} t={t} buyHref={buyHref} />
       <main className="flex-1">
-        <HeroSection />
-        <SocialProofBar />
-        <ChaptersSection />
-        <AudienceSection />
-        <ReviewsSection />
-        <FaqSection />
-        <FinalCTA />
-        <Footer />
+        <HeroSection t={t} buyHref={buyHref} />
+        <SocialProofBar t={t} />
+        <ChaptersSection t={t} />
+        <AudienceSection t={t} />
+        <ReviewsSection t={t} />
+        <FaqSection t={t} />
+        <FinalCTA t={t} buyHref={buyHref} />
+        <Footer t={t} />
       </main>
     </>
   )

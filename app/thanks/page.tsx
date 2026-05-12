@@ -3,13 +3,13 @@ import Image from 'next/image'
 import { CheckCircle2, Download } from 'lucide-react'
 import { stripe } from '@/lib/stripe'
 import { getPocketBaseAdmin, type SupportedLang } from '@/lib/pocketbase'
+import { getDict, pickLang } from '@/lib/i18n'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 async function getDownloadInfo(sessionId: string | undefined) {
   if (!sessionId) return null
-
   let email = ''
   let lang: SupportedLang = 'en'
   try {
@@ -19,7 +19,6 @@ async function getDownloadInfo(sessionId: string | undefined) {
   } catch {
     return null
   }
-
   try {
     const pb = await getPocketBaseAdmin()
     const order = await pb.collection('orders').getFirstListItem(`stripe_session_id = "${sessionId}"`)
@@ -28,17 +27,19 @@ async function getDownloadInfo(sessionId: string | undefined) {
       .getFirstListItem(`order = "${order.id}" && lang = "${order.lang}"`, { sort: '-created' })
     return { email: order.email || email, lang: order.lang as SupportedLang, token: dl.token }
   } catch {
-    return { email, lang, token: undefined }
+    return { email, lang, token: undefined as string | undefined }
   }
 }
 
 export default async function ThanksPage({
   searchParams,
 }: {
-  searchParams: Promise<{ session_id?: string }>
+  searchParams: Promise<{ session_id?: string; lang?: string }>
 }) {
   const params = await searchParams
   const info = await getDownloadInfo(params.session_id)
+  const lang = pickLang(info?.lang || params.lang)
+  const t = getDict(lang).thanks
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center">
@@ -55,9 +56,10 @@ export default async function ThanksPage({
 
       <div className="w2w-glass w-full max-w-md p-8">
         <CheckCircle2 className="mx-auto mb-4 h-14 w-14 text-[var(--w2w-cyan)] drop-shadow-[0_0_18px_rgba(91,200,255,0.6)]" />
-        <h1 className="text-3xl font-bold">You&rsquo;re in.</h1>
+        <h1 className="text-3xl font-bold">{t.title}</h1>
         <p className="mt-2 text-sm text-white/65">
-          Payment received. {info?.email ? <>A copy has been emailed to <strong className="text-white">{info.email}</strong>.</> : 'A copy has been emailed to you.'}
+          {t.bodyEmailed}{' '}
+          {info?.email ? <strong className="text-white">{info.email}</strong> : 'you'}.
         </p>
 
         {info?.token ? (
@@ -66,17 +68,15 @@ export default async function ThanksPage({
             className="w2w-cta mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl text-base font-bold"
           >
             <Download className="h-4 w-4" />
-            Download your PDF
+            {t.download}
           </a>
         ) : (
           <p className="mt-6 rounded-lg border border-white/10 bg-white/5 p-4 text-sm text-white/65">
-            Your PDF will arrive in your inbox within a minute. Check your spam folder if you don&rsquo;t see it.
+            {t.fallback}
           </p>
         )}
 
-        <p className="mt-6 text-xs text-white/45">
-          The download link is good for 14 days. Save the PDF once you have it.
-        </p>
+        <p className="mt-6 text-xs text-white/45">{t.note}</p>
       </div>
     </main>
   )
