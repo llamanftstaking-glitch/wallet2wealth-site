@@ -55,7 +55,8 @@ export async function POST(req: Request) {
   if (!order) {
     order = await pb.collection('orders').create({
       stripe_session_id: session.id,
-      stripe_payment_intent: typeof session.payment_intent === 'string' ? session.payment_intent : '',
+      stripe_payment_intent:
+        typeof session.payment_intent === 'string' ? session.payment_intent : '',
       email,
       amount_cents: session.amount_total ?? 299,
       currency: session.currency || 'usd',

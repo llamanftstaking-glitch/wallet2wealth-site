@@ -54,9 +54,9 @@ export default function TermsOfServicePage() {
 
         <h2 className="mt-8 text-xl font-bold text-white">Disclaimer</h2>
         <p className="text-white/80">
-          The site and product are provided &quot;as is&quot;. To the maximum extent allowed by
-          law, we disclaim all warranties and our total liability is limited to the amount you
-          paid us in the past 12 months.
+          The site and product are provided &quot;as is&quot;. To the maximum extent allowed by law,
+          we disclaim all warranties and our total liability is limited to the amount you paid us in
+          the past 12 months.
         </p>
 
         <h2 className="mt-8 text-xl font-bold text-white">Contact</h2>

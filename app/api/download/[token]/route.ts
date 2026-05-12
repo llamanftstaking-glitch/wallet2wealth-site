@@ -21,10 +21,7 @@ async function fileExists(p: string) {
   }
 }
 
-export async function GET(
-  req: Request,
-  ctx: { params: Promise<{ token: string }> },
-) {
+export async function GET(req: Request, ctx: { params: Promise<{ token: string }> }) {
   const { token } = await ctx.params
   if (!token || token.length < 16 || token.length > 128) {
     return NextResponse.json({ error: 'Invalid token' }, { status: 400 })
@@ -55,7 +52,10 @@ export async function GET(
   }
 
   const buffer = await fs.readFile(p)
-  const ab = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength) as ArrayBuffer
+  const ab = buffer.buffer.slice(
+    buffer.byteOffset,
+    buffer.byteOffset + buffer.byteLength,
+  ) as ArrayBuffer
   const data = new Blob([ab], { type: 'application/pdf' })
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || ''
 

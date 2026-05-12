@@ -4,9 +4,16 @@
   "scripts": {
     "build": "node scripts/build.js --lang=en",
     "build:es": "node scripts/build.js --lang=es",
-    "build:pt": "node scripts/build.js --lang=pt"
+    "build:it": "node scripts/build.js --lang=it",
+    "build:fr": "node scripts/build.js --lang=fr",
+    "build:pt": "node scripts/build.js --lang=pt",
+    "build:ru": "node scripts/build.js --lang=ru",
+    "build:all": "node scripts/build.js --lang=en && node scripts/build.js --lang=es && node scripts/build.js --lang=it && node scripts/build.js --lang=fr && node scripts/build.js --lang=pt && node scripts/build.js --lang=ru",
+    "translate": "node scripts/translate.js",
+    "sync": "node scripts/sync-to-site.js"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.1",
     "marked": "^12.0.0",
     "puppeteer": "^22.0.0",
     "yargs": "^18.0.0"

@@ -21,10 +21,7 @@ async function readSample(lang: SupportedLang) {
   return null
 }
 
-export async function GET(
-  _req: Request,
-  ctx: { params: Promise<{ lang: string }> },
-) {
+export async function GET(_req: Request, ctx: { params: Promise<{ lang: string }> }) {
   const { lang: raw } = await ctx.params
   const lang = (SUPPORTED_LANGS.includes(raw as SupportedLang) ? raw : 'en') as SupportedLang
 

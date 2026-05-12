@@ -5,15 +5,18 @@ import { Gift, Loader2, CheckCircle2 } from 'lucide-react'
 import type { Lang } from '@/lib/i18n'
 import { trackLead } from '@/lib/track'
 
-const COPY: Record<Lang, {
-  title: string
-  body: string
-  placeholder: string
-  cta: string
-  sending: string
-  success: string
-  successBody: string
-}> = {
+const COPY: Record<
+  Lang,
+  {
+    title: string
+    body: string
+    placeholder: string
+    cta: string
+    sending: string
+    success: string
+    successBody: string
+  }
+> = {
   en: {
     title: 'Want the first chapter free?',
     body: 'Drop your email and we’ll send the opening chapter — no credit card.',
@@ -21,7 +24,8 @@ const COPY: Record<Lang, {
     cta: 'Send me the free chapter',
     sending: 'Sending…',
     success: 'Check your inbox',
-    successBody: 'The free chapter is on its way. If you don’t see it in 2 minutes, check the spam folder.',
+    successBody:
+      'The free chapter is on its way. If you don’t see it in 2 minutes, check the spam folder.',
   },
   es: {
     title: '¿Quieres el primer capítulo gratis?',
@@ -39,7 +43,8 @@ const COPY: Record<Lang, {
     cta: 'Voglio il capitolo gratuito',
     sending: 'Invio in corso…',
     success: 'Controlla la posta',
-    successBody: 'Il capitolo gratuito sta arrivando. Se non lo vedi entro 2 minuti, controlla lo spam.',
+    successBody:
+      'Il capitolo gratuito sta arrivando. Se non lo vedi entro 2 minuti, controlla lo spam.',
   },
   fr: {
     title: 'Le premier chapitre gratuit ?',
@@ -48,7 +53,8 @@ const COPY: Record<Lang, {
     cta: 'Recevoir le chapitre gratuit',
     sending: 'Envoi…',
     success: 'Vérifiez votre boîte mail',
-    successBody: 'Le chapitre gratuit est en route. S’il ne s’affiche pas dans 2 minutes, regardez les spams.',
+    successBody:
+      'Le chapitre gratuit est en route. S’il ne s’affiche pas dans 2 minutes, regardez les spams.',
   },
   pt: {
     title: 'Quer o primeiro capítulo grátis?',
@@ -113,7 +119,10 @@ export function LeadMagnet({ lang }: { lang: Lang }) {
           <>
             <h3 className="text-2xl font-bold">{t.title}</h3>
             <p className="mt-2 text-sm text-white/70">{t.body}</p>
-            <form onSubmit={onSubmit} className="mx-auto mt-6 flex max-w-md flex-col gap-2 sm:flex-row">
+            <form
+              onSubmit={onSubmit}
+              className="mx-auto mt-6 flex max-w-md flex-col gap-2 sm:flex-row"
+            >
               <input
                 type="email"
                 required
@@ -131,9 +140,7 @@ export function LeadMagnet({ lang }: { lang: Lang }) {
                 {loading ? t.sending : t.cta}
               </button>
             </form>
-            {error && (
-              <p className="mt-3 text-sm text-red-300">{error}</p>
-            )}
+            {error && <p className="mt-3 text-sm text-red-300">{error}</p>}
           </>
         )}
       </div>

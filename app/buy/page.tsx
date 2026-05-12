@@ -44,7 +44,10 @@ function BuyForm() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-6 py-16">
-      <Link href="/" className="mb-10 flex items-center gap-2 text-sm text-white/65 hover:text-white">
+      <Link
+        href="/"
+        className="mb-10 flex items-center gap-2 text-sm text-white/65 hover:text-white"
+      >
         <Image
           src="/brand/logo-no-bg.png"
           alt="Wallet to Wealth"
@@ -85,7 +88,10 @@ function BuyForm() {
           </div>
 
           <div>
-            <label htmlFor="email" className="mb-2 block text-xs uppercase tracking-wide text-white/55">
+            <label
+              htmlFor="email"
+              className="mb-2 block text-xs uppercase tracking-wide text-white/55"
+            >
               {t.emailLabel}
             </label>
             <input

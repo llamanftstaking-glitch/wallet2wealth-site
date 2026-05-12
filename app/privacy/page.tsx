@@ -45,9 +45,7 @@ export default function PrivacyPolicyPage() {
           <li>To deliver the product you purchased and the free preview you requested.</li>
           <li>To send occasional product updates (you can unsubscribe anytime).</li>
           <li>To run anti-fraud checks and meet tax / legal obligations.</li>
-          <li>
-            To measure ad performance via Meta, TikTok, Google, and PostHog pixels.
-          </li>
+          <li>To measure ad performance via Meta, TikTok, Google, and PostHog pixels.</li>
         </ul>
 
         <h2 className="mt-8 text-xl font-bold text-white">Subprocessors</h2>

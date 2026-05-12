@@ -21,7 +21,7 @@ const COPY: Record<Locale, Strings> = {
   en: {
     subject: 'Your Wallet to Wealth PDF is ready',
     heading: 'Welcome — your guide is inside.',
-    body: "Thanks for grabbing a copy of Wallet to Wealth. Tap the button below to download your PDF. The link works for 14 days; save the file once you have it.",
+    body: 'Thanks for grabbing a copy of Wallet to Wealth. Tap the button below to download your PDF. The link works for 14 days; save the file once you have it.',
     cta: 'Download your PDF',
     footer: 'Questions? Just reply to this email.',
   },
@@ -94,7 +94,10 @@ export async function sendPdfReceiptEmail(opts: {
   return { id: res.data?.id }
 }
 
-const SAMPLE_COPY: Record<Locale, { subject: string; heading: string; body: string; cta: string; upsell: string }> = {
+const SAMPLE_COPY: Record<
+  Locale,
+  { subject: string; heading: string; body: string; cta: string; upsell: string }
+> = {
   en: {
     subject: 'Your free chapter from Wallet to Wealth',
     heading: 'Your free chapter is here.',

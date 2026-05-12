@@ -26,7 +26,9 @@ async function getDownloadInfo(sessionId: string | undefined) {
   }
   try {
     const pb = await getPocketBaseAdmin()
-    const order = await pb.collection('orders').getFirstListItem(`stripe_session_id = "${sessionId}"`)
+    const order = await pb
+      .collection('orders')
+      .getFirstListItem(`stripe_session_id = "${sessionId}"`)
     const dl = await pb
       .collection('downloads')
       .getFirstListItem(`order = "${order.id}" && lang = "${order.lang}"`, { sort: '-created' })
@@ -68,7 +70,10 @@ export default async function ThanksPage({
         currency={info?.currency}
         lang={lang}
       />
-      <Link href="/" className="mb-8 flex items-center gap-2 text-sm text-white/65 hover:text-white">
+      <Link
+        href="/"
+        className="mb-8 flex items-center gap-2 text-sm text-white/65 hover:text-white"
+      >
         <Image
           src="/brand/logo-no-bg.png"
           alt="Wallet to Wealth"
