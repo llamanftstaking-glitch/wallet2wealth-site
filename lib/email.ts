@@ -93,3 +93,83 @@ export async function sendPdfReceiptEmail(opts: {
 
   return { id: res.data?.id }
 }
+
+const SAMPLE_COPY: Record<Locale, { subject: string; heading: string; body: string; cta: string; upsell: string }> = {
+  en: {
+    subject: 'Your free chapter from Wallet to Wealth',
+    heading: 'Your free chapter is here.',
+    body: 'Hit the button below for the free preview. If you like it, the full guide is $2.99.',
+    cta: 'Download the free chapter',
+    upsell: 'Ready for the rest? Grab the full PDF for $2.99 →',
+  },
+  es: {
+    subject: 'Tu capítulo gratis de Wallet to Wealth',
+    heading: 'Tu capítulo gratis está aquí.',
+    body: 'Toca el botón para la vista previa gratis. Si te gusta, la guía completa cuesta $2.99.',
+    cta: 'Descargar capítulo gratis',
+    upsell: '¿Listo para el resto? Consigue el PDF completo por $2.99 →',
+  },
+  it: {
+    subject: 'Il tuo capitolo gratis di Wallet to Wealth',
+    heading: 'Il tuo capitolo gratuito è pronto.',
+    body: 'Tocca il pulsante per l’anteprima gratuita. Se ti piace, la guida completa costa $2.99.',
+    cta: 'Scarica il capitolo gratuito',
+    upsell: 'Vuoi il resto? Prendi il PDF completo per $2.99 →',
+  },
+  fr: {
+    subject: 'Votre chapitre gratuit de Wallet to Wealth',
+    heading: 'Votre chapitre gratuit est là.',
+    body: 'Cliquez sur le bouton pour l’aperçu gratuit. Si ça vous plaît, le guide complet est à 2,99 $.',
+    cta: 'Télécharger le chapitre gratuit',
+    upsell: 'Envie de la suite ? Le PDF complet est à 2,99 $ →',
+  },
+  pt: {
+    subject: 'Seu capítulo gratuito do Wallet to Wealth',
+    heading: 'Seu capítulo gratuito chegou.',
+    body: 'Toque no botão para a prévia gratuita. Se gostar, o guia completo sai por $2,99.',
+    cta: 'Baixar capítulo grátis',
+    upsell: 'Quer o resto? Pegue o PDF completo por $2,99 →',
+  },
+  ru: {
+    subject: 'Бесплатная глава из Wallet to Wealth',
+    heading: 'Ваша бесплатная глава внутри.',
+    body: 'Нажмите кнопку, чтобы скачать бесплатный фрагмент. Если зайдёт — полный гид всего $2.99.',
+    cta: 'Скачать бесплатную главу',
+    upsell: 'Готовы к полной версии? Полный PDF за $2.99 →',
+  },
+}
+
+export async function sendSampleChapterEmail(opts: {
+  to: string
+  lang: Locale
+  sampleUrl: string
+  buyUrl: string
+}): Promise<{ id?: string; skipped?: boolean }> {
+  if (!resend) return { skipped: true }
+  const t = SAMPLE_COPY[opts.lang] || SAMPLE_COPY.en
+
+  const html = `
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#0A0E1A;padding:40px 0;font-family:Inter,Arial,sans-serif;color:#fff">
+    <tr><td align="center">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="560" style="background:#0D1220;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:32px">
+        <tr><td>
+          <h1 style="margin:0 0 12px;font-size:24px;color:#5BC8FF">${t.heading}</h1>
+          <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:rgba(255,255,255,0.8)">${t.body}</p>
+          <a href="${opts.sampleUrl}" style="display:inline-block;padding:14px 24px;background:#5BC8FF;color:#0A0E1A;text-decoration:none;font-weight:700;border-radius:10px">${t.cta}</a>
+          <p style="margin:32px 0 0;font-size:14px;color:rgba(255,255,255,0.7)">
+            <a href="${opts.buyUrl}" style="color:#B8A9FF;text-decoration:none">${t.upsell}</a>
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>`
+
+  const res = await resend.emails.send({
+    from: FROM,
+    to: opts.to,
+    subject: t.subject,
+    html,
+  })
+
+  return { id: res.data?.id }
+}

@@ -13,6 +13,7 @@ import {
   CheckCircle2,
 } from 'lucide-react'
 import { LangSwitcher } from '@/components/LangSwitcher'
+import { LeadMagnet } from '@/components/LeadMagnet'
 import { getDict, pickLang, type Lang, type Dict } from '@/lib/i18n'
 
 const CHAPTER_ICONS = [Wallet, Coins, ShieldCheck, TrendingUp, BookOpen, Zap]
@@ -332,6 +333,7 @@ export default async function HomePage({
         <ChaptersSection t={t} />
         <AudienceSection t={t} />
         <ReviewsSection t={t} />
+        <LeadMagnet lang={lang} />
         <FaqSection t={t} />
         <FinalCTA t={t} buyHref={buyHref} />
         <Footer t={t} />
