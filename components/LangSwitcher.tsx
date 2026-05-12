@@ -32,7 +32,7 @@ export function LangSwitcher({ current }: { current: Lang }) {
         value={current}
         onChange={(e) => onPick(e.target.value as Lang)}
         disabled={pending}
-        className="h-9 cursor-pointer appearance-none rounded-lg border border-white/10 bg-white/5 px-3 pr-7 text-sm text-white outline-none focus:border-[var(--w2w-cyan)]"
+        className="h-10 cursor-pointer appearance-none rounded-lg border border-white/10 bg-white/5 px-2 pr-6 text-xs text-white outline-none focus:border-[var(--w2w-cyan)] sm:h-9 sm:px-3 sm:pr-7 sm:text-sm"
       >
         {SUPPORTED.map((l) => (
           <option key={l} value={l} className="bg-[#0A0E1A] text-white">
@@ -40,7 +40,7 @@ export function LangSwitcher({ current }: { current: Lang }) {
           </option>
         ))}
       </select>
-      <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-xs text-white/55">
+      <span className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-xs text-white/55 sm:right-2">
         ▾
       </span>
     </div>

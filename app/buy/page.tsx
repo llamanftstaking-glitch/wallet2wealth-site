@@ -43,10 +43,10 @@ function BuyForm() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-6 py-16">
+    <main className="flex min-h-screen flex-col items-center justify-start px-4 py-10 sm:justify-center sm:px-6 sm:py-16">
       <Link
         href="/"
-        className="mb-10 flex items-center gap-2 text-sm text-white/65 hover:text-white"
+        className="mb-8 flex items-center gap-2 text-sm text-white/65 hover:text-white sm:mb-10"
       >
         <Image
           src="/brand/logo-no-bg.png"
@@ -58,7 +58,7 @@ function BuyForm() {
         {t.back}
       </Link>
 
-      <div className="w2w-glass w-full max-w-md p-8">
+      <div className="w2w-glass w-full max-w-md p-6 sm:p-8">
         <h1 className="text-2xl font-bold">{t.title}</h1>
         <p className="mt-1 text-sm text-white/65">
           {t.sub} <span className="font-semibold text-[var(--w2w-cyan)]">$2.99</span>.
@@ -75,7 +75,7 @@ function BuyForm() {
                   key={l}
                   type="button"
                   onClick={() => setLang(l)}
-                  className={`rounded-lg border px-3 py-2 text-sm transition ${
+                  className={`min-h-[44px] rounded-lg border px-2 py-2 text-sm transition ${
                     lang === l
                       ? 'border-[var(--w2w-cyan)] bg-[var(--w2w-cyan)]/15 text-white'
                       : 'border-white/10 bg-white/5 text-white/70 hover:border-white/25'
@@ -97,12 +97,13 @@ function BuyForm() {
             <input
               id="email"
               type="email"
+              inputMode="email"
               required
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t.emailPlaceholder}
-              className="h-11 w-full rounded-lg border border-white/10 bg-white/5 px-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--w2w-cyan)]"
+              className="h-12 w-full rounded-lg border border-white/10 bg-white/5 px-3 text-base text-white outline-none placeholder:text-white/35 focus:border-[var(--w2w-cyan)]"
             />
           </div>
 

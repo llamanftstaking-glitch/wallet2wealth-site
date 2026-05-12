@@ -1,10 +1,18 @@
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import type { ReactNode } from 'react'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Provider } from '@/components/provider'
 import { Pixels, GtmNoscript } from '@/components/analytics/Pixels'
 import './global.css'
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: '#0A0E1A',
+}
 
 export const metadata: Metadata = {
   title: {
@@ -42,7 +50,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`dark ${GeistSans.variable} ${GeistMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="flex min-h-screen flex-col bg-[#0A0E1A] text-white antialiased">
+      <body className="flex min-h-screen flex-col overflow-x-hidden bg-[#0A0E1A] text-white antialiased">
         <GtmNoscript />
         <Pixels />
         <Provider>{children}</Provider>

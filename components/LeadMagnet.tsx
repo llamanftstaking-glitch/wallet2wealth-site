@@ -105,19 +105,19 @@ export function LeadMagnet({ lang }: { lang: Lang }) {
   }
 
   return (
-    <section className="px-6 py-16">
-      <div className="mx-auto w2w-glass max-w-2xl p-8 text-center">
+    <section className="px-4 py-12 sm:px-6 sm:py-16">
+      <div className="w2w-glass mx-auto max-w-2xl p-6 text-center sm:p-8">
         <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-[var(--w2w-cyan)]/15 text-[var(--w2w-cyan)]">
           {done ? <CheckCircle2 className="h-5 w-5" /> : <Gift className="h-5 w-5" />}
         </div>
         {done ? (
           <>
-            <h3 className="text-2xl font-bold">{t.success}</h3>
+            <h3 className="text-balance text-xl font-bold sm:text-2xl">{t.success}</h3>
             <p className="mt-2 text-sm text-white/70">{t.successBody}</p>
           </>
         ) : (
           <>
-            <h3 className="text-2xl font-bold">{t.title}</h3>
+            <h3 className="text-balance text-xl font-bold sm:text-2xl">{t.title}</h3>
             <p className="mt-2 text-sm text-white/70">{t.body}</p>
             <form
               onSubmit={onSubmit}
@@ -125,16 +125,18 @@ export function LeadMagnet({ lang }: { lang: Lang }) {
             >
               <input
                 type="email"
+                inputMode="email"
                 required
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={t.placeholder}
-                className="h-11 flex-1 rounded-lg border border-white/10 bg-white/5 px-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--w2w-cyan)]"
+                className="h-12 flex-1 rounded-lg border border-white/10 bg-white/5 px-3 text-base text-white outline-none placeholder:text-white/35 focus:border-[var(--w2w-cyan)]"
               />
               <button
                 type="submit"
                 disabled={loading || !email}
-                className="w2w-cta inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-bold disabled:cursor-not-allowed disabled:opacity-60"
+                className="w2w-cta inline-flex h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-bold disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                 {loading ? t.sending : t.cta}

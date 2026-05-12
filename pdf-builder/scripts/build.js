@@ -19,7 +19,7 @@ const blockchainSvgPath = path.join(ROOT, 'design', 'images', 'blockchain-diagra
 const blockchainSvgB64 = 'data:image/svg+xml;base64,' + Buffer.from(fs.readFileSync(blockchainSvgPath, 'utf-8')).toString('base64');
 
 // ── AI IMAGES ── (compress to JPEG via sips, then base64)
-const W2W_IMGS_DIR = '/Users/rayquinones/Desktop/W2W';
+const W2W_IMGS_DIR = process.env.W2W_IMGS_DIR || '/Users/rayquinones/Desktop/GIZER./W2W';
 function loadImg(filename) {
   const src = path.join(W2W_IMGS_DIR, filename);
   if (!fs.existsSync(src)) { console.warn(`⚠️  Missing image: ${filename}`); return null; }
@@ -242,7 +242,7 @@ async function build() {
   const browser = await puppeteer.launch({ headless: 'new', args: ['--no-sandbox'] });
   const page = await browser.newPage();
   console.log('📄 Rendering HTML...');
-  await page.setContent(html, { waitUntil: 'networkidle0', timeout: 120000 });
+  await page.setContent(html, { waitUntil: 'load', timeout: 300000 });
   console.log('🖨️  Generating PDF...');
   await page.pdf({
     path: outputPath,

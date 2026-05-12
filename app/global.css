@@ -47,10 +47,32 @@
     color: #fff;
   }
 
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
     font-family: var(--font-geist-sans), Inter, -apple-system, BlinkMacSystemFont,
       'Segoe UI', sans-serif;
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Prevent iOS zoom-on-focus by keeping input font-size >= 16px on touch devices */
+  @media (max-width: 768px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+    }
+  }
+
+  /* Native lang select dropdown background fix on dark mode iOS Safari */
+  select option {
+    background-color: var(--w2w-navy);
+    color: #fff;
   }
 
   h1,
@@ -102,4 +124,18 @@
   border-radius: 9999px;
   position: absolute;
   pointer-events: none;
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .w2w-blob {
+    filter: blur(40px);
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .w2w-blob {
+    animation: none;
+  }
 }

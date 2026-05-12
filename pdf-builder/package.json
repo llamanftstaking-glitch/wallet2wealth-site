@@ -15,7 +15,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.1",
     "marked": "^12.0.0",
-    "puppeteer": "^22.0.0",
+    "puppeteer": "^24.43.1",
     "yargs": "^18.0.0"
   }
 }
