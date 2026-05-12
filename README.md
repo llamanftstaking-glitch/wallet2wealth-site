@@ -1,75 +1,65 @@
-# LibreChat Docs
+# Wallet to Wealth
 
-The official documentation site for [LibreChat](https://github.com/danny-avila/LibreChat), built with [Next.js 15](https://nextjs.org/) and [Fumadocs](https://fumadocs.vercel.app/).
+Crypto-beginner education site. $2.99 PDF tripwire with free-chapter lead magnet.
 
-**[www.librechat.ai](https://www.librechat.ai)**
+- **Frontend**: Next.js 16 + Tailwind, 6 languages (EN/ES/IT/FR/PT/RU)
+- **Backend**: PocketBase (SQLite) for subscribers, orders, downloads
+- **Payments**: Stripe Checkout ($2.99 one-time)
+- **Email**: Resend (multilingual receipts + sample-chapter drip)
+- **Pixels**: Meta, TikTok, GA4, GTM, PostHog (env-gated)
 
-## Tech Stack
+## Local development
 
-- **Framework:** Next.js 15 (App Router)
-- **Docs Engine:** Fumadocs (fumadocs-mdx + fumadocs-ui)
-- **Styling:** Tailwind CSS
-- **Icons:** Lucide React
-- **Package Manager:** Bun
-
-## Local Development
-
-**Prerequisites:** [Bun](https://bun.sh/) 1.0+
-
-1. Clone the repository
-2. Copy `.env.template` to `.env.local` and fill in any optional values
-3. Install dependencies:
-   ```bash
-   bun i
-   ```
-4. Start the dev server (uses Turbopack):
-   ```bash
-   bun dev
-   ```
-5. Open [http://localhost:3333](http://localhost:3333)
-
-**Note:** Always run `bun run build` before opening a PR to catch build errors early.
-
-## Project Structure
-
-```
-app/              # Next.js App Router pages (docs, blog, changelog, API routes)
-content/
-  docs/           # Documentation pages (MDX)
-  blog/           # Blog posts (MDX)
-  changelog/      # Changelog entries (MDX)
-components/       # React components (home, UI, icons, etc.)
-lib/              # Utilities, icons, MDX components, Nextra shims
-public/           # Static assets
-pages/            # Legacy pages (migrating to app/)
-source.config.ts  # Fumadocs content collections config
+```bash
+pnpm install
+bash pocketbase/download.sh
+pnpm pb:migrate
+pnpm dev
 ```
 
-### Documentation Content
+- http://localhost:3333 — landing
+- http://localhost:8090/_/ — PocketBase admin (create superuser first boot)
 
-Docs live in `content/docs/` and are organized by section. Each directory has a `meta.json` that controls sidebar navigation:
+## Environment
 
-```json
-{
-  "title": "Section Title",
-  "icon": "Wrench",
-  "pages": ["index", "page-one", "page-two"]
-}
+Copy `.env.template` → `.env` and fill in:
+
+- `POCKETBASE_ADMIN_EMAIL`, `POCKETBASE_ADMIN_PASSWORD`
+- `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`,
+  `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+- `RESEND_API_KEY`, `EMAIL_FROM`
+- Pixel IDs (optional)
+
+## PDFs
+
+Drop language files into `pdfs/`:
+
+```
+pdfs/w2w-en.pdf  w2w-es.pdf  w2w-it.pdf  w2w-fr.pdf  w2w-pt.pdf  w2w-ru.pdf
 ```
 
-Only pages listed in the `pages` array appear in the sidebar.
+Then build samples: `node scripts/build-sample-pdf.mjs`.
 
-## Scripts
+PDFs are gitignored — upload them to the Replit VM volume.
 
-| Command | Description |
-|---------|-------------|
-| `bun dev` | Start dev server on port 3333 (Turbopack) |
-| `bun run build` | Production build |
-| `bun start` | Start production server on port 3333 |
-| `bun run lint` | Run ESLint |
-| `bun run prettier` | Format code with Prettier |
-| `bun run analyze` | Analyze production bundle size |
+## Deploy (Replit Reserved VM)
 
-## License
+1. Push this repo to GitHub.
+2. Import into Replit, choose Reserved VM.
+3. Add all env vars to Secrets.
+4. Replit build runs: install → download PocketBase → migrate → build.
+5. Run command: `pnpm start` (spawns Next + PocketBase).
+6. Bind `wallet2wealth.com` to the Replit deployment.
+7. Configure Stripe webhook → `https://wallet2wealth.com/api/stripe-webhook`
+   (event: `checkout.session.completed`).
 
-[MIT](./LICENSE)
+## Routes
+
+- `/` — landing
+- `/buy` — Stripe checkout
+- `/thanks` — success + download
+- `POST /api/checkout` — Stripe session
+- `POST /api/stripe-webhook` — order + download token + email
+- `GET /api/download/[token]` — gated PDF (14 days)
+- `POST /api/lead` — email capture + sample drip
+- `GET /api/sample/[lang]` — sample PDF

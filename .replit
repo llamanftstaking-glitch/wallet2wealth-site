@@ -1,0 +1,38 @@
+# Replit configuration — Wallet to Wealth (Next.js + PocketBase)
+# Use a Reserved VM deployment for persistent SQLite + uploads.
+
+modules = ["nodejs-20", "bash"]
+run = "pnpm start"
+
+hidden = [".config", ".next", "node_modules", ".source", ".trash", ".cache"]
+
+[nix]
+channel = "stable-24_05"
+
+[env]
+NEXT_TELEMETRY_DISABLED = "1"
+PORT = "3333"
+
+[packager]
+language = "nodejs"
+
+[packager.features]
+enabledForHosting = false
+packageSearch = true
+guessImports = true
+
+[unitTest]
+language = "nodejs"
+
+[deployment]
+deploymentTarget = "vm"
+build = ["sh", "-c", "pnpm install --frozen-lockfile && bash pocketbase/download.sh && pnpm pb:migrate && pnpm build"]
+run = ["sh", "-c", "pnpm start"]
+
+[[ports]]
+localPort = 3333
+externalPort = 80
+
+[[ports]]
+localPort = 8090
+externalPort = 8090

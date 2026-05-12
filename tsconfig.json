@@ -22,9 +22,6 @@
     "paths": {
       "@/*": [
         "./*"
-      ],
-      "fumadocs-mdx:collections/*": [
-        ".source/*"
       ]
     },
     "plugins": [
@@ -34,11 +31,8 @@
     ]
   },
   "include": [
-    "**/*.mdx",
     "**/*.ts",
     "**/*.tsx",
-    "./source.config.ts",
-    ".source/**/*.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"

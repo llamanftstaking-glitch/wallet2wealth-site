@@ -54,7 +54,9 @@ export async function GET(
     }
   }
 
-  const data = await fs.readFile(p)
+  const buffer = await fs.readFile(p)
+  const ab = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength) as ArrayBuffer
+  const data = new Blob([ab], { type: 'application/pdf' })
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || ''
 
   try {
@@ -71,7 +73,7 @@ export async function GET(
     status: 200,
     headers: {
       'content-type': 'application/pdf',
-      'content-length': String(data.length),
+      'content-length': String(data.size),
       'content-disposition': `attachment; filename="wallet-to-wealth-${lang}.pdf"`,
       'cache-control': 'private, no-store',
     },

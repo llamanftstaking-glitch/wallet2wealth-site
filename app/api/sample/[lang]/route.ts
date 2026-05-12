@@ -11,7 +11,9 @@ async function readSample(lang: SupportedLang) {
   for (const candidate of [`sample-${lang}.pdf`, 'sample-en.pdf']) {
     const p = path.join(PDFS_DIR, candidate)
     try {
-      return { data: await fs.readFile(p), lang }
+      const buf = await fs.readFile(p)
+      const ab = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer
+      return { data: new Blob([ab], { type: 'application/pdf' }), lang }
     } catch {
       // try next
     }
@@ -35,7 +37,7 @@ export async function GET(
     status: 200,
     headers: {
       'content-type': 'application/pdf',
-      'content-length': String(file.data.length),
+      'content-length': String(file.data.size),
       'content-disposition': `inline; filename="wallet-to-wealth-sample-${lang}.pdf"`,
       'cache-control': 'public, max-age=3600',
     },

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -8,7 +8,7 @@ import { Lock, Loader2 } from 'lucide-react'
 import { getDict, pickLang, SUPPORTED, LANG_LABELS, type Lang } from '@/lib/i18n'
 import { trackInitiateCheckout } from '@/lib/track'
 
-export default function BuyPage() {
+function BuyForm() {
   const sp = useSearchParams()
   const initial = pickLang(sp?.get('lang') || undefined)
   const [lang, setLang] = useState<Lang>(initial)
@@ -122,5 +122,19 @@ export default function BuyPage() {
         </form>
       </div>
     </main>
+  )
+}
+
+export default function BuyPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-screen items-center justify-center">
+          <Loader2 className="h-6 w-6 animate-spin text-[var(--w2w-cyan)]" />
+        </main>
+      }
+    >
+      <BuyForm />
+    </Suspense>
   )
 }
