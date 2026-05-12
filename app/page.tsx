@@ -14,6 +14,8 @@ import {
 } from 'lucide-react'
 import { LangSwitcher } from '@/components/LangSwitcher'
 import { LeadMagnet } from '@/components/LeadMagnet'
+import { TrustBadges } from '@/components/TrustBadges'
+import { ProductJsonLd } from '@/components/ProductJsonLd'
 import { getDict, pickLang, type Lang, type Dict } from '@/lib/i18n'
 
 const CHAPTER_ICONS = [Wallet, Coins, ShieldCheck, TrendingUp, BookOpen, Zap]
@@ -58,7 +60,7 @@ function NavBar({ lang, t, buyHref }: { lang: Lang; t: Dict; buyHref: string }) 
   )
 }
 
-function HeroSection({ t, buyHref }: { t: Dict; buyHref: string }) {
+function HeroSection({ t, buyHref, lang }: { t: Dict; buyHref: string; lang: Lang }) {
   return (
     <section className="relative isolate overflow-hidden px-4 pb-12 pt-10 sm:px-6 sm:pb-16 sm:pt-16 md:pb-24 md:pt-24">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -129,6 +131,8 @@ function HeroSection({ t, buyHref }: { t: Dict; buyHref: string }) {
           {t.hero.cta}
         </Link>
 
+        <TrustBadges lang={lang} />
+
         <div className="flex items-center gap-2 text-xs text-white/55 sm:text-sm">
           <Download className="h-4 w-4" />
           {t.hero.delivery}
@@ -166,7 +170,9 @@ function ChaptersSection({ t }: { t: Dict }) {
     <section className="px-4 py-12 sm:px-6 sm:py-16 md:py-24">
       <div className="mx-auto max-w-5xl">
         <div className="mb-8 text-center sm:mb-12">
-          <h2 className="text-balance text-2xl font-bold sm:text-3xl md:text-4xl">{t.chaptersHeader.title}</h2>
+          <h2 className="text-balance text-2xl font-bold sm:text-3xl md:text-4xl">
+            {t.chaptersHeader.title}
+          </h2>
           <p className="mt-3 text-white/65">{t.chaptersHeader.sub}</p>
         </div>
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -194,7 +200,9 @@ function AudienceSection({ t }: { t: Dict }) {
     <section className="bg-white/[0.02] px-4 py-12 sm:px-6 sm:py-16 md:py-24">
       <div className="mx-auto max-w-5xl">
         <div className="mb-8 text-center sm:mb-12">
-          <h2 className="text-balance text-2xl font-bold sm:text-3xl md:text-4xl">{t.audienceHeader}</h2>
+          <h2 className="text-balance text-2xl font-bold sm:text-3xl md:text-4xl">
+            {t.audienceHeader}
+          </h2>
         </div>
         <div className="grid gap-5 md:grid-cols-3">
           {t.audience.map((a) => (
@@ -216,7 +224,9 @@ function ReviewsSection({ t }: { t: Dict }) {
     <section className="px-4 py-12 sm:px-6 sm:py-16 md:py-24">
       <div className="mx-auto max-w-5xl">
         <div className="mb-8 text-center sm:mb-12">
-          <h2 className="text-balance text-2xl font-bold sm:text-3xl md:text-4xl">{t.reviewsHeader}</h2>
+          <h2 className="text-balance text-2xl font-bold sm:text-3xl md:text-4xl">
+            {t.reviewsHeader}
+          </h2>
         </div>
         <div className="grid gap-5 md:grid-cols-3">
           {t.reviews.map((r) => (
@@ -355,9 +365,10 @@ export default async function HomePage({
 
   return (
     <>
+      <ProductJsonLd lang={lang} />
       <NavBar lang={lang} t={t} buyHref={buyHref} />
       <main className="flex-1">
-        <HeroSection t={t} buyHref={buyHref} />
+        <HeroSection t={t} buyHref={buyHref} lang={lang} />
         <SocialProofBar t={t} />
         <ChaptersSection t={t} />
         <AudienceSection t={t} />

@@ -35,6 +35,16 @@ export function Pixels() {
 
   return (
     <>
+      {/* Google Consent Mode v2 — default deny everything; CookieConsent updates after user picks. */}
+      {(safe.gtm || safe.ga4) && (
+        <Script
+          id="consent-default"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});`,
+          }}
+        />
+      )}
       {safe.gtm && (
         <Script
           id="gtm-init"
