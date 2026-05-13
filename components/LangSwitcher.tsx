@@ -12,15 +12,11 @@ export function LangSwitcher({ current }: { current: Lang }) {
 
   function onPick(next: Lang) {
     const params = new URLSearchParams(searchParams?.toString())
-    if (next === 'en') {
-      params.delete('lang')
-    } else {
-      params.set('lang', next)
-    }
+    params.set('lang', next)
     const qs = params.toString()
     document.cookie = `w2w_lang=${next}; path=/; max-age=${60 * 60 * 24 * 365}`
     startTransition(() => {
-      router.replace(qs ? `${pathname}?${qs}` : pathname)
+      router.replace(`${pathname}?${qs}`)
       router.refresh()
     })
   }
