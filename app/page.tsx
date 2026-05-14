@@ -16,6 +16,7 @@ import { LangSwitcher } from '@/components/LangSwitcher'
 import { LeadMagnet } from '@/components/LeadMagnet'
 import { TrustBadges } from '@/components/TrustBadges'
 import { ProductJsonLd } from '@/components/ProductJsonLd'
+import { ExitIntentPopup } from '@/components/ExitIntentPopup'
 import { getDict, pickLang, type Lang, type Dict } from '@/lib/i18n'
 
 const CHAPTER_ICONS = [Wallet, Coins, ShieldCheck, TrendingUp, BookOpen, Zap]
@@ -379,6 +380,7 @@ export default async function HomePage({
         <Footer t={t} />
       </main>
       <StickyMobileCTA t={t} buyHref={buyHref} />
+      <ExitIntentPopup lang={lang} />
     </>
   )
 }

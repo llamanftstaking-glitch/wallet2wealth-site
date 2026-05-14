@@ -10,6 +10,7 @@ import {
 } from '@/lib/supabase'
 import { getDict, pickLang } from '@/lib/i18n'
 import { PurchaseTracker } from '@/components/PurchaseTracker'
+import { WhitelistForm } from '@/components/WhitelistForm'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -78,7 +79,7 @@ export default async function ThanksPage({
   const t = getDict(lang).thanks
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center">
+    <main className="flex min-h-screen flex-col items-center px-6 py-16">
       <PurchaseTracker
         orderId={info?.orderId}
         value={info?.amount}
@@ -99,7 +100,7 @@ export default async function ThanksPage({
         Wallet to Wealth
       </Link>
 
-      <div className="w2w-glass w-full max-w-md p-8">
+      <div className="w2w-glass w-full max-w-md p-8 text-center">
         <CheckCircle2 className="mx-auto mb-4 h-14 w-14 text-[var(--w2w-cyan)] drop-shadow-[0_0_18px_rgba(91,200,255,0.6)]" />
         <h1 className="text-3xl font-bold">{t.title}</h1>
         <p className="mt-2 text-sm text-white/65">
@@ -122,6 +123,10 @@ export default async function ThanksPage({
         )}
 
         <p className="mt-6 text-xs text-white/45">{t.note}</p>
+      </div>
+
+      <div className="mt-10 w-full max-w-md">
+        <WhitelistForm defaultEmail={info?.email || ''} orderId={info?.orderId} lang={lang} />
       </div>
     </main>
   )
