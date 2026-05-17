@@ -63,7 +63,7 @@ function NavBar({ lang, t, buyHref }: { lang: Lang; t: Dict; buyHref: string }) 
 
 function HeroSection({ t, buyHref, lang }: { t: Dict; buyHref: string; lang: Lang }) {
   return (
-    <section className="relative isolate overflow-hidden px-4 pb-12 pt-10 sm:px-6 sm:pb-16 sm:pt-16 md:pb-24 md:pt-24">
+    <section className="relative isolate overflow-hidden px-4 pb-12 pt-5 sm:px-6 sm:pb-16 sm:pt-16 md:pb-24 md:pt-24">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div
           className="w2w-blob"
@@ -93,15 +93,15 @@ function HeroSection({ t, buyHref, lang }: { t: Dict; buyHref: string; lang: Lan
         />
       </div>
 
-      <div className="mx-auto flex max-w-5xl flex-col items-center gap-5 text-center sm:gap-7 md:gap-8">
+      <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 text-center sm:gap-7 md:gap-8">
         <Image
           src="/brand/logo-no-bg.png"
           alt="Wallet to Wealth"
           width={180}
           height={180}
           priority
-          sizes="(max-width: 640px) 110px, 180px"
-          className="h-[110px] w-[110px] drop-shadow-[0_0_36px_rgba(91,200,255,0.45)] sm:h-[150px] sm:w-[150px] md:h-[180px] md:w-[180px]"
+          sizes="(max-width: 640px) 72px, 180px"
+          className="h-[72px] w-[72px] drop-shadow-[0_0_36px_rgba(91,200,255,0.45)] sm:h-[150px] sm:w-[150px] md:h-[180px] md:w-[180px]"
         />
 
         <span className="w2w-glass inline-flex items-center gap-2 px-3 py-1 text-xs text-white/80 sm:text-sm">

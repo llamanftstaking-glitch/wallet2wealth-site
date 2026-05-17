@@ -112,7 +112,24 @@ export async function POST(req: Request) {
   const downloadUrl = `${siteUrl()}/api/download/${token}`
   await sendPdfReceiptEmail({ to: email, lang, downloadUrl })
 
-  // Auto-subscribe buyer (upsert by unique email).
+  try {
+    const tgToken = process.env.TELEGRAM_BOT_TOKEN
+    const tgChat = process.env.TELEGRAM_ADMIN_CHAT_ID
+    if (tgToken && tgChat) {
+      const amount = ((session.amount_total ?? 299) / 100).toFixed(2)
+      const country = session.customer_details?.address?.country || '?'
+      const text = `New W2W order\n${email}\nLang: ${lang.toUpperCase()} | Country: ${country}\nAmount: $${amount} ${(session.currency || 'usd').toUpperCase()}`
+      await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: tgChat, text }),
+      })
+    }
+  } catch {}
+
+  // Auto-subscribe buyer + start the 3-touch nurture sequence.
+  // First nurture email fires ~24h after purchase (the immediate PDF
+  // email above is touch zero and is not part of the sequence).
   await sb.from('subscribers').upsert(
     {
       email,
@@ -120,6 +137,8 @@ export async function POST(req: Request) {
       source: 'purchase',
       consent: true,
       confirmed: true,
+      seq_step: 0,
+      seq_next_at: new Date(Date.now() + 24 * 3600_000).toISOString(),
     },
     { onConflict: 'email' },
   )
