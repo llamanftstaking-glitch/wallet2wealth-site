@@ -32,8 +32,8 @@ export async function POST(req: Request) {
     const expected = crypto.createHmac('sha256', secret).update(raw).digest('hex')
     // Whop signatures may come as `sha256=<hex>` or plain hex — support both
     const provided = sig.startsWith('sha256=') ? sig.slice(7) : sig
-    const a = Buffer.from(expected, 'hex')
-    const b = Buffer.from(provided, 'hex')
+    const a = new Uint8Array(Buffer.from(expected, 'hex'))
+    const b = new Uint8Array(Buffer.from(provided, 'hex'))
     if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
       return NextResponse.json({ error: 'bad_signature' }, { status: 401 })
     }
