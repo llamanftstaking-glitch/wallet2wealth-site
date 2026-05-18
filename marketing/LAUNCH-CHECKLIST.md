@@ -30,7 +30,7 @@ Brand assets:
 
 ### Step 1 — Account
 
-- [ ] gumroad.com → Sign up with `gizertech@gmail.com`
+- [ ] gumroad.com → Sign up with `hello@wallet2wealth.com`
 - [ ] Verify email
 - [ ] Add payout method (PayPal or bank — Stripe Connect auto-links)
 - [ ] Username: `wallet2wealth`
@@ -78,7 +78,7 @@ Brand assets:
 
 ### Step 1 — Account
 
-- [ ] whop.com → Sign up as seller, `gizertech@gmail.com`
+- [ ] whop.com → Sign up as seller, `hello@wallet2wealth.com`
 - [ ] Verify
 - [ ] Connect Stripe (use existing W2W Stripe account)
 - [ ] Handle: `wallet2wealth` (or `gizer` if taken)

@@ -56,8 +56,8 @@ export default function PrivacyPolicyPage() {
         <h2 className="mt-8 text-xl font-bold text-white">Your rights</h2>
         <p className="text-white/80">
           Email{' '}
-          <a className="text-[var(--w2w-cyan)]" href="mailto:privacy@wallet2wealth.com">
-            privacy@wallet2wealth.com
+          <a className="text-[var(--w2w-cyan)]" href="mailto:hello@wallet2wealth.com">
+            hello@wallet2wealth.com
           </a>{' '}
           to access, correct, export, or delete data. GDPR and CCPA requests handled within 30 days.
         </p>
