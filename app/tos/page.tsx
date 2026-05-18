@@ -37,12 +37,13 @@ export default function TermsOfServicePage() {
 
         <h2 className="mt-8 text-xl font-bold text-white">Refunds</h2>
         <p className="text-white/80">
-          Because the product is a digital file delivered instantly, all sales are final. If your
-          download fails or the file is corrupted, email{' '}
+          We offer a 7-day money-back guarantee. If Wallet to Wealth does not deliver value, email{' '}
           <a className="text-[var(--w2w-cyan)]" href="mailto:hello@wallet2wealth.com">
             hello@wallet2wealth.com
           </a>{' '}
-          and we will resend it.
+          within 7 days of purchase for a full refund — no questions asked. After 7 days the sale is
+          final. If your download fails or the file is corrupted, contact us at any time and we will
+          resend it.
         </p>
 
         <h2 className="mt-8 text-xl font-bold text-white">Acceptable use</h2>

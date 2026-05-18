@@ -7,38 +7,38 @@ const COPY: Record<
   en: {
     stripe: 'Stripe secured',
     instant: 'Instant download',
-    email: 'Emailed too',
-    satisfaction: '256-bit SSL',
+    email: 'Also emailed to you',
+    satisfaction: '7-day refund',
   },
   es: {
     stripe: 'Pago seguro Stripe',
     instant: 'Descarga inmediata',
-    email: 'También por email',
-    satisfaction: 'SSL 256-bit',
+    email: 'También enviado por email',
+    satisfaction: 'Reembolso 7 días',
   },
   it: {
     stripe: 'Pagamento Stripe sicuro',
     instant: 'Download immediato',
     email: 'Anche via email',
-    satisfaction: 'SSL 256-bit',
+    satisfaction: 'Rimborso 7 giorni',
   },
   fr: {
     stripe: 'Paiement Stripe sécurisé',
     instant: 'Téléchargement immédiat',
     email: 'Aussi par email',
-    satisfaction: 'SSL 256-bit',
+    satisfaction: 'Remboursement 7 jours',
   },
   pt: {
     stripe: 'Pagamento Stripe seguro',
     instant: 'Download imediato',
     email: 'Também por email',
-    satisfaction: 'SSL 256-bit',
+    satisfaction: 'Reembolso 7 dias',
   },
   ru: {
     stripe: 'Безопасная оплата Stripe',
     instant: 'Мгновенная загрузка',
     email: 'Также на email',
-    satisfaction: 'SSL 256-bit',
+    satisfaction: 'Возврат 7 дней',
   },
 }
 

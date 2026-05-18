@@ -17,6 +17,10 @@ import { LeadMagnet } from '@/components/LeadMagnet'
 import { TrustBadges } from '@/components/TrustBadges'
 import { ProductJsonLd } from '@/components/ProductJsonLd'
 import { ExitIntentPopup } from '@/components/ExitIntentPopup'
+import { FounderStory } from '@/components/FounderStory'
+import { Comparison } from '@/components/Comparison'
+import { PreviewCarousel } from '@/components/PreviewCarousel'
+import { TrustedTools } from '@/components/TrustedTools'
 import { getDict, pickLang, type Lang, type Dict } from '@/lib/i18n'
 
 const CHAPTER_ICONS = [Wallet, Coins, ShieldCheck, TrendingUp, BookOpen, Zap]
@@ -138,6 +142,10 @@ function HeroSection({ t, buyHref, lang }: { t: Dict; buyHref: string; lang: Lan
           <Download className="h-4 w-4" />
           {t.hero.delivery}
         </div>
+
+        <p className="max-w-md text-[11px] uppercase tracking-[0.18em] text-white/35">
+          Education only — not financial advice.
+        </p>
       </div>
     </section>
   )
@@ -328,6 +336,9 @@ function Footer({ t }: { t: Dict }) {
           <Link href="/tos" className="hover:text-white/80">
             {t.footer.terms}
           </Link>
+          <Link href="/affiliate-disclosure" className="hover:text-white/80">
+            Affiliates
+          </Link>
         </div>
       </div>
     </footer>
@@ -371,12 +382,16 @@ export default async function HomePage({
       <main className="flex-1">
         <HeroSection t={t} buyHref={buyHref} lang={lang} />
         <SocialProofBar t={t} />
-        <ChaptersSection t={t} />
-        <AudienceSection t={t} />
         <ReviewsSection t={t} />
+        <ChaptersSection t={t} />
+        <PreviewCarousel lang={lang} />
+        <Comparison lang={lang} />
+        <AudienceSection t={t} />
+        <FounderStory lang={lang} />
         <LeadMagnet lang={lang} />
         <FaqSection t={t} />
         <FinalCTA t={t} buyHref={buyHref} />
+        <TrustedTools lang={lang} />
         <Footer t={t} />
       </main>
       <StickyMobileCTA t={t} buyHref={buyHref} />

@@ -65,14 +65,14 @@ const en: Dict = {
   nav: { buy: 'Buy Now' },
   hero: {
     badge: '⚠ Read before you buy your first coin',
-    h1Line1: "Don't lose your first $100",
-    h1Line2: 'to a scam you could have spotted.',
-    sub: 'A 40-page crypto-beginner field guide. Wallets, scams, and your first real buy — explained in plain English.',
+    h1Line1: 'Before you buy crypto,',
+    h1Line2: 'learn how not to get scammed.',
+    sub: 'A beginner-friendly guide that teaches wallets, safety, first buys, and crypto fundamentals — in plain English. Built for people who want in without the BS.',
     priceCaption: 'One coffee. One PDF. Zero noise.',
-    cta: 'Protect Yourself — $2.99',
-    delivery: 'Instant PDF · Emailed too · 14-day refund',
+    cta: 'Get the Guide — $2.99',
+    delivery: 'Instant PDF · Also emailed to you · 7-day refund',
   },
-  socialBar: { downloads: '1,200+ downloads', rated: 'Rated 5 stars by beginners' },
+  socialBar: { downloads: 'New release · 2026', rated: 'Beginner-safe · plain English' },
   chaptersHeader: {
     title: 'Everything You Need to Start',
     sub: 'Focused chapters, zero jargon. Each one builds on the last.',
@@ -118,45 +118,57 @@ const en: Dict = {
       body: 'At this price, the real risk is staying on the sideline.',
     },
   ],
-  reviewsHeader: 'Beginners Are Already Winning',
+  reviewsHeader: 'Early Reader Feedback',
   reviews: [
     {
-      name: 'Mia R.',
-      role: 'First-time buyer',
-      body: 'I bought my first Bitcoin the same day. The wallet section alone was worth way more than $2.99.',
+      name: 'M. — Brooklyn, NY',
+      role: 'Early reader · first-time buyer',
+      body: 'I had no idea what a seed phrase even was. After chapter 2 I felt safe enough to actually open my first wallet.',
     },
     {
-      name: 'Daniel K.',
-      role: 'Self-taught',
-      body: 'Finally a guide that does not assume I already know what gas fees are. Highlighter dry by chapter 3.',
+      name: 'D. — Austin, TX',
+      role: 'Early reader · self-taught',
+      body: 'Every other guide assumes you already know what gas fees are. This one finally explains it like a human.',
     },
     {
-      name: 'Sofia A.',
-      role: 'Skeptic',
-      body: 'I almost did not buy it because of the price. Turns out cheap does not mean low value.',
+      name: 'S. — Madrid, ES',
+      role: 'Early reader · cautious',
+      body: 'The scam chapter alone was worth more than $2.99. I almost clicked one of the exact links they describe.',
     },
   ],
   faqHeader: 'Got Questions?',
   faq: [
     {
+      q: 'Is this safe for a complete beginner?',
+      a: 'Yes — that is exactly who it is written for. If you can use email, you can follow this guide. No prior crypto knowledge required.',
+    },
+    {
       q: 'What exactly do I get for $2.99?',
-      a: 'A beginner-friendly PDF (instant download + emailed copy) covering wallets, coins, scams, your first purchase, market cycles, and a 7-day action plan.',
+      a: 'A beginner-friendly PDF (instant download plus emailed copy) covering wallets, coins, scams, your first purchase, market cycles, and a 7-day action plan.',
+    },
+    {
+      q: 'Is this financial advice?',
+      a: 'No. This is education only. Always do your own research and consult a licensed professional before investing.',
+    },
+    {
+      q: 'Do I need to know anything about crypto first?',
+      a: 'No. The guide assumes zero prior knowledge. Every concept is explained in plain English with real-world analogies.',
+    },
+    {
+      q: 'What wallet should I use?',
+      a: 'The guide covers beginner-safe options including Coinbase Wallet, Trust Wallet, and hardware wallets like Ledger. We explain when to use each.',
+    },
+    {
+      q: 'Can I get a refund?',
+      a: 'Yes. 7-day money-back guarantee, no questions asked. Email hello@wallet2wealth.com within 7 days of purchase.',
+    },
+    {
+      q: 'How do I receive it?',
+      a: 'Two ways. Instant download on the thank-you page, plus a copy emailed to you immediately after checkout.',
     },
     {
       q: 'Why so cheap?',
       a: 'The goal is to help you start, not gatekeep. If $2.99 helps you avoid one scam, the guide already paid for itself many times over.',
-    },
-    {
-      q: 'How do I receive it?',
-      a: 'Two ways. You get an instant download link on the thank-you page, plus a copy emailed to you immediately after checkout.',
-    },
-    {
-      q: 'Is this financial advice?',
-      a: 'No. This is education — the basics nobody bothered to explain to you. Always do your own research before investing.',
-    },
-    {
-      q: 'Will this work for someone who is completely non-technical?',
-      a: 'Yes. That is exactly who it is written for. If you can use email, you can follow this guide.',
     },
   ],
   finalCta: {
@@ -167,7 +179,7 @@ const en: Dict = {
     delivery: 'Instant PDF delivery after purchase',
   },
   footer: {
-    copy: '© 2026 Wallet to Wealth. Instant PDF delivery after purchase.',
+    copy: '© 2026 Wallet to Wealth™ by Gizer Technology Group LLC. Education only — not financial advice.',
     privacy: 'Privacy',
     terms: 'Terms',
   },
@@ -196,14 +208,17 @@ const es: Dict = {
   nav: { buy: 'Comprar' },
   hero: {
     badge: '⚠ Léelo antes de comprar tu primera moneda',
-    h1Line1: 'No pierdas tus primeros $100',
-    h1Line2: 'por una estafa que podías ver venir.',
-    sub: 'Una guía cripto de 40 páginas para principiantes. Wallets, estafas y tu primera compra real — en español claro.',
+    h1Line1: 'Antes de comprar cripto,',
+    h1Line2: 'aprende a no caer en estafas.',
+    sub: 'Una guía para principiantes que enseña wallets, seguridad, tu primera compra y los fundamentos de cripto — en español claro. Para quienes quieren entrar sin tonterías.',
     priceCaption: 'Un café. Un PDF. Cero ruido.',
-    cta: 'Protégete — $2.99',
-    delivery: 'PDF instantáneo · También por email · Reembolso 14 días',
+    cta: 'Obtén la guía — $2.99',
+    delivery: 'PDF instantáneo · También por email · Reembolso 7 días',
   },
-  socialBar: { downloads: '1,200+ descargas', rated: 'Calificado 5 estrellas por principiantes' },
+  socialBar: {
+    downloads: 'Nuevo lanzamiento · 2026',
+    rated: 'Apto para principiantes · español claro',
+  },
   chaptersHeader: {
     title: 'Todo lo que Necesitas para Empezar',
     sub: 'Capítulos enfocados, cero jerga. Cada uno construye sobre el anterior.',
@@ -249,7 +264,7 @@ const es: Dict = {
       body: 'A este precio, el verdadero riesgo es quedarte fuera.',
     },
   ],
-  reviewsHeader: 'Los Principiantes Ya Están Ganando',
+  reviewsHeader: 'Comentarios de Lectores Tempranos',
   reviews: [
     {
       name: 'Mía R.',
@@ -298,7 +313,7 @@ const es: Dict = {
     delivery: 'Entrega PDF al instante tras la compra',
   },
   footer: {
-    copy: '© 2026 Wallet to Wealth. Entrega PDF inmediata.',
+    copy: '© 2026 Wallet to Wealth™ por Gizer Technology Group LLC. Solo educación — no es asesoría financiera.',
     privacy: 'Privacidad',
     terms: 'Términos',
   },
@@ -327,14 +342,14 @@ const it: Dict = {
   nav: { buy: 'Acquista' },
   hero: {
     badge: '⚠ Leggi prima di comprare la tua prima moneta',
-    h1Line1: 'Non perdere i tuoi primi $100',
-    h1Line2: 'per una truffa che potevi evitare.',
-    sub: 'Una guida crypto di 40 pagine per principianti. Wallet, truffe e il tuo primo acquisto vero — in italiano semplice.',
+    h1Line1: 'Prima di comprare crypto,',
+    h1Line2: 'impara a evitare le truffe.',
+    sub: 'Una guida per principianti che spiega wallet, sicurezza, il primo acquisto e i fondamentali crypto — in italiano semplice. Per chi vuole iniziare senza fronzoli.',
     priceCaption: 'Un caffè. Un PDF. Zero rumore.',
-    cta: 'Proteggiti — $2.99',
-    delivery: 'PDF immediato · Anche via email · Rimborso 14 giorni',
+    cta: 'Ottieni la guida — $2.99',
+    delivery: 'PDF immediato · Anche via email · Rimborso 7 giorni',
   },
-  socialBar: { downloads: '1.200+ download', rated: 'Valutata 5 stelle dai principianti' },
+  socialBar: { downloads: 'Nuova uscita · 2026', rated: 'Per principianti · italiano semplice' },
   chaptersHeader: {
     title: 'Tutto Quello che Serve per Iniziare',
     sub: 'Capitoli mirati, zero gergo. Ognuno costruisce sul precedente.',
@@ -380,7 +395,7 @@ const it: Dict = {
       body: 'A questo prezzo, il vero rischio è restare a guardare.',
     },
   ],
-  reviewsHeader: 'I Principianti Stanno Già Vincendo',
+  reviewsHeader: 'Feedback dei Primi Lettori',
   reviews: [
     {
       name: 'Mia R.',
@@ -429,7 +444,7 @@ const it: Dict = {
     delivery: 'Consegna PDF immediata dopo il pagamento',
   },
   footer: {
-    copy: '© 2026 Wallet to Wealth. Consegna PDF immediata.',
+    copy: '© 2026 Wallet to Wealth™ di Gizer Technology Group LLC. Solo formazione — non è consulenza finanziaria.',
     privacy: 'Privacy',
     terms: 'Termini',
   },
@@ -458,14 +473,14 @@ const fr: Dict = {
   nav: { buy: 'Acheter' },
   hero: {
     badge: '⚠ À lire avant d’acheter votre première crypto',
-    h1Line1: 'Ne perdez pas vos 100 premiers dollars',
-    h1Line2: 'à cause d’une arnaque évitable.',
-    sub: 'Un guide crypto de 40 pages pour débutants. Wallets, arnaques et votre premier vrai achat — en français clair.',
+    h1Line1: 'Avant d’acheter de la crypto,',
+    h1Line2: 'apprenez à éviter les arnaques.',
+    sub: 'Un guide pour débutants qui explique les wallets, la sécurité, le premier achat et les bases crypto — en français clair. Pour ceux qui veulent se lancer sans baratin.',
     priceCaption: 'Un café. Un PDF. Zéro bruit.',
-    cta: 'Protégez-vous — 2,99 $',
-    delivery: 'PDF instantané · Aussi par email · Remboursement 14 jours',
+    cta: 'Obtenir le guide — 2,99 $',
+    delivery: 'PDF instantané · Aussi par email · Remboursement 7 jours',
   },
-  socialBar: { downloads: '1 200+ téléchargements', rated: 'Noté 5 étoiles par des débutants' },
+  socialBar: { downloads: 'Nouvelle sortie · 2026', rated: 'Débutants bienvenus · français clair' },
   chaptersHeader: {
     title: 'Tout ce qu’il Vous Faut pour Démarrer',
     sub: 'Des chapitres ciblés, zéro jargon. Chacun s’appuie sur le précédent.',
@@ -511,7 +526,7 @@ const fr: Dict = {
       body: 'À ce prix, le vrai risque est de rester sur le banc.',
     },
   ],
-  reviewsHeader: 'Les Débutants Avancent Déjà',
+  reviewsHeader: 'Retours des Premiers Lecteurs',
   reviews: [
     {
       name: 'Mia R.',
@@ -560,7 +575,7 @@ const fr: Dict = {
     delivery: 'Livraison PDF immédiate après paiement',
   },
   footer: {
-    copy: '© 2026 Wallet to Wealth. Livraison PDF immédiate.',
+    copy: '© 2026 Wallet to Wealth™ par Gizer Technology Group LLC. Éducation seulement — pas de conseil financier.',
     privacy: 'Confidentialité',
     terms: 'Conditions',
   },
@@ -589,14 +604,14 @@ const pt: Dict = {
   nav: { buy: 'Comprar' },
   hero: {
     badge: '⚠ Leia antes de comprar sua primeira moeda',
-    h1Line1: 'Não perca seus primeiros $100',
-    h1Line2: 'para um golpe que dava para evitar.',
-    sub: 'Um guia cripto de 40 páginas para iniciantes. Wallets, golpes e sua primeira compra real — em português claro.',
+    h1Line1: 'Antes de comprar cripto,',
+    h1Line2: 'aprenda a evitar golpes.',
+    sub: 'Um guia para iniciantes sobre wallets, segurança, primeira compra e fundamentos cripto — em português claro. Para quem quer entrar sem enrolação.',
     priceCaption: 'Um café. Um PDF. Zero ruído.',
-    cta: 'Proteja-se — $2,99',
-    delivery: 'PDF imediato · Também por email · Reembolso em 14 dias',
+    cta: 'Garantir o guia — $2,99',
+    delivery: 'PDF imediato · Também por email · Reembolso em 7 dias',
   },
-  socialBar: { downloads: '1.200+ downloads', rated: 'Avaliado 5 estrelas por iniciantes' },
+  socialBar: { downloads: 'Lançamento novo · 2026', rated: 'Para iniciantes · português claro' },
   chaptersHeader: {
     title: 'Tudo o que Você Precisa para Começar',
     sub: 'Capítulos diretos, zero jargão. Cada um se apoia no anterior.',
@@ -642,7 +657,7 @@ const pt: Dict = {
       body: 'Por esse preço, o verdadeiro risco é ficar de fora.',
     },
   ],
-  reviewsHeader: 'Iniciantes Já Estão no Jogo',
+  reviewsHeader: 'Feedback dos Primeiros Leitores',
   reviews: [
     {
       name: 'Mia R.',
@@ -691,7 +706,7 @@ const pt: Dict = {
     delivery: 'Entrega PDF imediata após a compra',
   },
   footer: {
-    copy: '© 2026 Wallet to Wealth. Entrega PDF imediata.',
+    copy: '© 2026 Wallet to Wealth™ por Gizer Technology Group LLC. Apenas educação — não é aconselhamento financeiro.',
     privacy: 'Privacidade',
     terms: 'Termos',
   },
@@ -719,14 +734,14 @@ const ru: Dict = {
   nav: { buy: 'Купить' },
   hero: {
     badge: '⚠ Прочтите перед покупкой первой монеты',
-    h1Line1: 'Не теряйте первые $100',
-    h1Line2: 'на скаме, который можно было увидеть.',
-    sub: 'Крипто-гид на 40 страниц для новичков. Кошельки, скамы и ваша первая реальная покупка — простым языком.',
+    h1Line1: 'Прежде чем покупать крипту,',
+    h1Line2: 'научитесь не попадаться на скам.',
+    sub: 'Руководство для новичков о кошельках, безопасности, первой покупке и основах крипты — простым языком. Для тех, кто хочет войти без шума.',
     priceCaption: 'Кофе. PDF. Без шума.',
-    cta: 'Защитите себя — $2.99',
-    delivery: 'Мгновенный PDF · Также по email · Возврат 14 дней',
+    cta: 'Получить гид — $2.99',
+    delivery: 'Мгновенный PDF · Также по email · Возврат 7 дней',
   },
-  socialBar: { downloads: '1 200+ загрузок', rated: 'Оценка 5 звёзд от новичков' },
+  socialBar: { downloads: 'Новый релиз · 2026', rated: 'Для новичков · простой язык' },
   chaptersHeader: {
     title: 'Всё, что нужно для старта',
     sub: 'Фокусные главы, ноль жаргона. Каждая опирается на предыдущую.',
@@ -772,7 +787,7 @@ const ru: Dict = {
       body: 'По такой цене настоящий риск — остаться в стороне.',
     },
   ],
-  reviewsHeader: 'Новички уже в плюсе',
+  reviewsHeader: 'Отзывы ранних читателей',
   reviews: [
     {
       name: 'Мия Р.',
@@ -821,7 +836,7 @@ const ru: Dict = {
     delivery: 'Мгновенная доставка PDF после оплаты',
   },
   footer: {
-    copy: '© 2026 Wallet to Wealth. Мгновенная доставка PDF.',
+    copy: '© 2026 Wallet to Wealth™, Gizer Technology Group LLC. Только обучение — не финансовый совет.',
     privacy: 'Конфиденциальность',
     terms: 'Условия',
   },

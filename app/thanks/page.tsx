@@ -11,6 +11,7 @@ import {
 import { getDict, pickLang } from '@/lib/i18n'
 import { PurchaseTracker } from '@/components/PurchaseTracker'
 import { WhitelistForm } from '@/components/WhitelistForm'
+import { StarterSetup } from '@/components/StarterSetup'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -128,6 +129,11 @@ export default async function ThanksPage({
       <div className="mt-10 w-full max-w-md">
         <WhitelistForm defaultEmail={info?.email || ''} orderId={info?.orderId} lang={lang} />
       </div>
+
+      <StarterSetup
+        lang={lang}
+        downloadHref={info?.token ? `/api/download/${info.token}` : undefined}
+      />
     </main>
   )
 }
