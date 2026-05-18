@@ -41,16 +41,13 @@ export const metadata: Metadata = {
     title: 'Wallet to Wealth — Crypto for Beginners, $2.99',
     description:
       'A clear, beginner-friendly PDF that walks you through wallets, coins, and your first real crypto move.',
-    images: [
-      { url: '/brand/og.webp', width: 1200, height: 1200, type: 'image/webp' },
-      { url: '/brand/og.png', width: 1200, height: 1200, type: 'image/png' },
-    ],
+    images: [{ url: '/brand/og.png', width: 1200, height: 630, type: 'image/png' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Wallet to Wealth — Crypto for Beginners',
     description: 'Instant crypto-beginner PDF for $2.99. Skip the YouTube rabbit holes.',
-    images: ['/brand/og.webp'],
+    images: ['/brand/og.png'],
   },
   icons: {
     icon: [

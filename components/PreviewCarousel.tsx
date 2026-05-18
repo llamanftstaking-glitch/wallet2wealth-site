@@ -1,235 +1,235 @@
-import { BookOpen, Wallet, ShieldCheck, ListChecks, TrendingUp } from 'lucide-react'
+import Image from 'next/image'
 import type { Lang } from '@/lib/i18n'
 
 type Card = {
-  icon: 'wallet' | 'shield' | 'list' | 'trend' | 'book'
+  src: string
   page: string
   title: string
   body: string
 }
 
-const ICON: Record<Card['icon'], React.ComponentType<{ className?: string }>> = {
-  wallet: Wallet,
-  shield: ShieldCheck,
-  list: ListChecks,
-  trend: TrendingUp,
-  book: BookOpen,
-}
+const IMAGES = [
+  '/brand/preview/page-14.png',
+  '/brand/preview/page-19.png',
+  '/brand/preview/page-27.png',
+  '/brand/preview/page-30.png',
+  '/brand/preview/page-35.png',
+]
 
 const COPY: Record<Lang, { title: string; sub: string; cards: Card[] }> = {
   en: {
     title: 'See exactly what is inside',
-    sub: 'A peek at five of the most-loved pages from early readers.',
+    sub: 'Five real pages from the PDF — no mockups.',
     cards: [
       {
-        icon: 'wallet',
-        page: 'Page 6',
-        title: 'Hot wallet vs cold wallet — explained',
-        body: 'Side-by-side diagram of how each works. When to use one, when to upgrade.',
-      },
-      {
-        icon: 'shield',
+        src: IMAGES[0],
         page: 'Page 14',
-        title: 'The 5 scam patterns that catch beginners',
-        body: 'Fake support DMs, seed-phrase phishing, copycat token contracts, address poisoning, "double-your-deposit" airdrops.',
+        title: 'Seed phrase rules — non-negotiable',
+        body: 'The 8-step setup checklist that keeps your seed phrase out of phishing reach.',
       },
       {
-        icon: 'list',
+        src: IMAGES[1],
         page: 'Page 19',
-        title: 'Your first $100 — step-by-step',
-        body: 'Open exchange, verify ID, fund the account, place the buy, send to your wallet. No skipped steps.',
+        title: 'How phishing attacks happen',
+        body: 'The fake-site → fake-popup → drained-wallet flow, with the 7-item security checklist.',
       },
       {
-        icon: 'trend',
+        src: IMAGES[2],
         page: 'Page 27',
-        title: 'Why prices crash 80% (and why that is normal)',
-        body: 'How crypto market cycles actually run, plain-English version. The chart that calms your nerves.',
+        title: 'Why prices crash 80% — and why it is normal',
+        body: 'The crypto market-cycle chart, plain-English. Plus the DCA setup that stops emotional buys.',
       },
       {
-        icon: 'book',
-        page: 'Page 33',
-        title: 'The 7-day starter plan',
-        body: 'Day-by-day to-do list. Read the page, do the step, check the box. By Sunday you are no longer a beginner.',
+        src: IMAGES[3],
+        page: 'Page 30',
+        title: 'What is a blockchain, really',
+        body: 'Wallets, nodes, and how transactions get confirmed — the only fundamentals you actually need.',
+      },
+      {
+        src: IMAGES[4],
+        page: 'Page 35',
+        title: 'The emotions you will feel',
+        body: 'FOMO, panic, greed, regret — the chart most beginners only recognize after they lose money.',
       },
     ],
   },
   es: {
     title: 'Mira exactamente lo que hay dentro',
-    sub: 'Cinco de las páginas favoritas de los primeros lectores.',
+    sub: 'Cinco páginas reales del PDF — sin maquetas.',
     cards: [
       {
-        icon: 'wallet',
-        page: 'Página 6',
-        title: 'Hot wallet vs cold wallet',
-        body: 'Diagrama lado a lado. Cuándo usar cada una.',
-      },
-      {
-        icon: 'shield',
+        src: IMAGES[0],
         page: 'Página 14',
-        title: 'Los 5 patrones de estafa',
-        body: 'DMs falsos, phishing de seed, contratos clonados, envenenamiento de address, airdrops "duplica tu depósito".',
+        title: 'Reglas de seed phrase — no negociables',
+        body: 'Checklist de 8 pasos que mantiene tu seed lejos del phishing.',
       },
       {
-        icon: 'list',
+        src: IMAGES[1],
         page: 'Página 19',
-        title: 'Tus primeros $100 — paso a paso',
-        body: 'Abrir exchange, verificar, fondear, comprar, enviar a tu wallet.',
+        title: 'Cómo ocurren los ataques de phishing',
+        body: 'El flujo sitio falso → pop-up falso → wallet vaciada + checklist de seguridad.',
       },
       {
-        icon: 'trend',
+        src: IMAGES[2],
         page: 'Página 27',
-        title: '¿Por qué los precios caen 80%?',
-        body: 'Cómo funcionan los ciclos del mercado cripto.',
+        title: 'Por qué los precios caen 80%',
+        body: 'El ciclo del mercado cripto en lenguaje claro. Más la estrategia DCA contra compras emocionales.',
       },
       {
-        icon: 'book',
-        page: 'Página 33',
-        title: 'Plan de 7 días',
-        body: 'Tarea diaria. Lees, haces, marcas. El domingo ya no eres principiante.',
+        src: IMAGES[3],
+        page: 'Página 30',
+        title: 'Qué es realmente una blockchain',
+        body: 'Wallets, nodos y cómo se confirman las transacciones — lo único que necesitas saber.',
+      },
+      {
+        src: IMAGES[4],
+        page: 'Página 35',
+        title: 'Las emociones que sentirás',
+        body: 'FOMO, pánico, codicia, arrepentimiento — el gráfico que los principiantes reconocen tarde.',
       },
     ],
   },
   it: {
     title: 'Guarda esattamente cosa c’è dentro',
-    sub: 'Cinque pagine preferite dai primi lettori.',
+    sub: 'Cinque pagine vere del PDF — niente mockup.',
     cards: [
       {
-        icon: 'wallet',
-        page: 'Pag. 6',
-        title: 'Hot wallet vs cold wallet',
-        body: 'Diagramma fianco a fianco. Quando usare cosa.',
-      },
-      {
-        icon: 'shield',
+        src: IMAGES[0],
         page: 'Pag. 14',
-        title: 'I 5 schemi di truffa',
-        body: 'DM falsi, phishing seed, contratti clonati, address poisoning, airdrop "raddoppia il deposito".',
+        title: 'Regole della seed phrase',
+        body: 'Checklist in 8 passi che tiene la tua seed fuori dalla portata del phishing.',
       },
       {
-        icon: 'list',
+        src: IMAGES[1],
         page: 'Pag. 19',
-        title: 'I tuoi primi $100 — passo passo',
-        body: 'Apri exchange, verifica, deposita, compra, invia al wallet.',
+        title: 'Come funzionano gli attacchi phishing',
+        body: 'Sito falso → pop-up falso → wallet svuotato. Più checklist sicurezza.',
       },
       {
-        icon: 'trend',
+        src: IMAGES[2],
         page: 'Pag. 27',
-        title: 'Perché i prezzi crollano dell’80%?',
-        body: 'Come funzionano i cicli crypto.',
+        title: 'Perché i prezzi crollano dell’80%',
+        body: 'Il ciclo del mercato crypto spiegato. Più la strategia DCA contro gli acquisti emotivi.',
       },
       {
-        icon: 'book',
-        page: 'Pag. 33',
-        title: 'Piano di 7 giorni',
-        body: 'Un compito al giorno. Domenica non sei più principiante.',
+        src: IMAGES[3],
+        page: 'Pag. 30',
+        title: 'Cos’è davvero una blockchain',
+        body: 'Wallet, nodi, conferme delle transazioni — i fondamentali essenziali.',
+      },
+      {
+        src: IMAGES[4],
+        page: 'Pag. 35',
+        title: 'Le emozioni che proverai',
+        body: 'FOMO, panico, avidità, rimpianto — il grafico che i principianti riconoscono tardi.',
       },
     ],
   },
   fr: {
     title: 'Voyez exactement ce qu’il y a dedans',
-    sub: 'Cinq pages préférées des premiers lecteurs.',
+    sub: 'Cinq vraies pages du PDF — pas de maquette.',
     cards: [
       {
-        icon: 'wallet',
-        page: 'Page 6',
-        title: 'Hot wallet vs cold wallet',
-        body: 'Schéma côte à côte. Quand utiliser quoi.',
-      },
-      {
-        icon: 'shield',
+        src: IMAGES[0],
         page: 'Page 14',
-        title: 'Les 5 arnaques classiques',
-        body: 'Faux DM, phishing de seed, contrats copiés, address poisoning, airdrop "double ton dépôt".',
+        title: 'Règles de seed phrase',
+        body: 'Checklist en 8 étapes pour mettre votre seed hors de portée du phishing.',
       },
       {
-        icon: 'list',
+        src: IMAGES[1],
         page: 'Page 19',
-        title: 'Vos premiers 100 $ — pas à pas',
-        body: 'Ouverture exchange, vérif, dépôt, achat, envoi vers wallet.',
+        title: 'Comment se passent les attaques phishing',
+        body: 'Faux site → faux pop-up → wallet vidé. Plus la checklist sécurité.',
       },
       {
-        icon: 'trend',
+        src: IMAGES[2],
         page: 'Page 27',
-        title: 'Pourquoi les prix chutent de 80% ?',
-        body: 'Cycles de marché crypto expliqués.',
+        title: 'Pourquoi les prix chutent de 80%',
+        body: 'Le cycle du marché crypto expliqué. Plus la stratégie DCA anti-achat émotionnel.',
       },
       {
-        icon: 'book',
-        page: 'Page 33',
-        title: 'Plan de 7 jours',
-        body: 'Une tâche par jour. Dimanche, vous n’êtes plus débutant.',
+        src: IMAGES[3],
+        page: 'Page 30',
+        title: 'Qu’est-ce qu’une blockchain, vraiment',
+        body: 'Wallets, nœuds, confirmations — les fondamentaux qui comptent.',
+      },
+      {
+        src: IMAGES[4],
+        page: 'Page 35',
+        title: 'Les émotions que vous ressentirez',
+        body: 'FOMO, panique, avidité, regret — le graphique que les débutants reconnaissent trop tard.',
       },
     ],
   },
   pt: {
     title: 'Veja exatamente o que tem dentro',
-    sub: 'Cinco páginas favoritas dos primeiros leitores.',
+    sub: 'Cinco páginas reais do PDF — sem mockups.',
     cards: [
       {
-        icon: 'wallet',
-        page: 'Página 6',
-        title: 'Hot wallet vs cold wallet',
-        body: 'Diagrama lado a lado. Quando usar cada.',
-      },
-      {
-        icon: 'shield',
+        src: IMAGES[0],
         page: 'Página 14',
-        title: 'Os 5 padrões de golpe',
-        body: 'DMs falsos, phishing de seed, contratos clonados, envenenamento de address, airdrops "dobre seu depósito".',
+        title: 'Regras da seed phrase',
+        body: 'Checklist de 8 passos que mantém sua seed longe do phishing.',
       },
       {
-        icon: 'list',
+        src: IMAGES[1],
         page: 'Página 19',
-        title: 'Seus primeiros $100 — passo a passo',
-        body: 'Abrir exchange, verificar, depositar, comprar, enviar para wallet.',
+        title: 'Como acontecem os ataques de phishing',
+        body: 'Site falso → pop-up falso → wallet drenada + checklist de segurança.',
       },
       {
-        icon: 'trend',
+        src: IMAGES[2],
         page: 'Página 27',
-        title: 'Por que os preços caem 80%?',
-        body: 'Como os ciclos do mercado cripto funcionam.',
+        title: 'Por que os preços caem 80%',
+        body: 'O ciclo do mercado cripto explicado. Mais a estratégia DCA contra compras emocionais.',
       },
       {
-        icon: 'book',
-        page: 'Página 33',
-        title: 'Plano de 7 dias',
-        body: 'Uma tarefa por dia. Domingo você não é mais iniciante.',
+        src: IMAGES[3],
+        page: 'Página 30',
+        title: 'O que é uma blockchain de verdade',
+        body: 'Wallets, nós, confirmações — os fundamentais que importam.',
+      },
+      {
+        src: IMAGES[4],
+        page: 'Página 35',
+        title: 'As emoções que você vai sentir',
+        body: 'FOMO, pânico, ganância, arrependimento — o gráfico que iniciantes reconhecem tarde.',
       },
     ],
   },
   ru: {
     title: 'Загляните внутрь',
-    sub: 'Пять любимых страниц первых читателей.',
+    sub: 'Пять настоящих страниц PDF — без макетов.',
     cards: [
       {
-        icon: 'wallet',
-        page: 'Стр. 6',
-        title: 'Hot wallet vs cold wallet',
-        body: 'Сравнение бок о бок. Что когда использовать.',
-      },
-      {
-        icon: 'shield',
+        src: IMAGES[0],
         page: 'Стр. 14',
-        title: '5 шаблонов скама',
-        body: 'Фейковые DM, фишинг seed, клон-контракты, address poisoning, "удвоим депозит".',
+        title: 'Правила seed-фразы',
+        body: 'Чек-лист из 8 шагов, чтобы seed не попал в фишинг.',
       },
       {
-        icon: 'list',
+        src: IMAGES[1],
         page: 'Стр. 19',
-        title: 'Первые $100 — пошагово',
-        body: 'Биржа, верификация, депозит, покупка, отправка на кошелёк.',
+        title: 'Как происходят фишинг-атаки',
+        body: 'Фейк-сайт → фейк-попап → опустошённый кошелёк + чек-лист безопасности.',
       },
       {
-        icon: 'trend',
+        src: IMAGES[2],
         page: 'Стр. 27',
-        title: 'Почему цены падают на 80%?',
-        body: 'Циклы крипто-рынка простым языком.',
+        title: 'Почему цены падают на 80%',
+        body: 'Цикл крипто-рынка простым языком. Плюс DCA против эмоциональных покупок.',
       },
       {
-        icon: 'book',
-        page: 'Стр. 33',
-        title: 'План на 7 дней',
-        body: 'По задаче в день. В воскресенье вы уже не новичок.',
+        src: IMAGES[3],
+        page: 'Стр. 30',
+        title: 'Что такое блокчейн на самом деле',
+        body: 'Кошельки, ноды, подтверждения — только нужные основы.',
+      },
+      {
+        src: IMAGES[4],
+        page: 'Стр. 35',
+        title: 'Эмоции, которые вы почувствуете',
+        body: 'FOMO, паника, жадность, сожаление — график, который новички узнают поздно.',
       },
     ],
   },
@@ -239,36 +239,41 @@ export function PreviewCarousel({ lang }: { lang: Lang }) {
   const t = COPY[lang]
   return (
     <section className="px-4 py-12 sm:px-6 sm:py-16 md:py-24">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-6xl">
         <div className="mb-8 text-center sm:mb-12">
           <h2 className="text-balance text-2xl font-bold sm:text-3xl md:text-4xl">{t.title}</h2>
           <p className="mt-3 text-white/65">{t.sub}</p>
         </div>
         <div className="-mx-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
           <div className="flex min-w-max gap-4 sm:grid sm:min-w-0 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
-            {t.cards.map((c, i) => {
-              const Icon = ICON[c.icon]
-              return (
-                <article
-                  key={i}
-                  className="w2w-glass relative w-72 shrink-0 overflow-hidden p-5 sm:w-auto sm:p-6"
-                >
-                  <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[var(--w2w-lavender)]/15 to-transparent" />
-                  <div className="relative">
-                    <Icon className="mb-3 h-7 w-7 text-[var(--w2w-cyan)]" />
-                    <div className="mb-1 text-[10px] uppercase tracking-[0.2em] text-white/45">
-                      {c.page}
-                    </div>
-                    <h3 className="mb-2 text-base font-bold leading-snug sm:text-lg">{c.title}</h3>
-                    <p className="text-sm text-white/65">{c.body}</p>
+            {t.cards.map((c, i) => (
+              <article
+                key={i}
+                className="w2w-glass relative w-72 shrink-0 overflow-hidden p-0 sm:w-auto"
+              >
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#0A0E1A]">
+                  <Image
+                    src={c.src}
+                    alt={`${c.title} — ${c.page}`}
+                    fill
+                    sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 288px"
+                    className="object-cover object-top"
+                  />
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0A0E1A] via-[#0A0E1A]/80 to-transparent" />
+                  <div className="absolute left-3 top-3 rounded-full bg-black/60 px-2 py-1 text-[10px] uppercase tracking-[0.2em] text-white/80 backdrop-blur">
+                    {c.page}
                   </div>
-                </article>
-              )
-            })}
+                </div>
+                <div className="p-5 sm:p-6">
+                  <h3 className="mb-2 text-base font-bold leading-snug sm:text-lg">{c.title}</h3>
+                  <p className="text-sm text-white/65">{c.body}</p>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
         <p className="mt-4 text-center text-xs text-white/45">
-          Layouts are stylized previews. Final pages use the same content.
+          Real pages from the PDF. Cropped to top of each page.
         </p>
       </div>
     </section>
